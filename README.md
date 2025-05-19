@@ -7,13 +7,15 @@ cd ../..
 ```
 
 ## 2. Instrument anytree
-1. Instrument all the target python files
+
+### 2.1 Instrument the target python files
 ```
 cd anytree
 ./../tools/instrument-py.sh
 cd ..
 ```
-2. Instrument the entrypoint
+
+### 2.2 Instrument the entrypoint
 ```
 sed -i '1 i\from otkt.otelinit import tracer' examples/anytree-test.py
 ```
