@@ -53,7 +53,7 @@ In `/tmp` there should be kieker logs. If not, go back to 4.
 # plot graph
 cd ./bin/adctree
 dot aggregatedDeploymentCallTree.dot -T pdf -o output.pdf
-cd ..
+cd ../..
 ```
 
 ### 5.2 Deployment Component Dependency Graph
@@ -67,7 +67,7 @@ cd ..
 # plot graph
 cd ./bin/dcdgraph
 dot deploymentComponentDependencyGraph.dot -T pdf -o output.pdf
-cd ..
+cd ../..
 ```
 
 ### 5.3 Deployment Sequence Diagrams
@@ -79,7 +79,7 @@ cd ..
 --plot-Deployment-Sequence-Diagrams
 
 # plot graphs
-cd ./bin/dsdiagrams
-../tools/process.sh
-cd ..
+cd bin/dsdiagrams
+../../tools/process.sh
+cd ../..
 ```
