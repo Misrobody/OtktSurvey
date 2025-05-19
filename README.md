@@ -2,8 +2,7 @@
 
 ## 1. Generate the instrumenting probe and collector
 ```
- java -jar kieker.otel.translation.generator/target/kieker.otel.translation.generator-1.0.0-SNAPSHOT-jar-with-dependencies.jar ../../examples/demo.otkt  ../../otkt-bin/
-cd ../..
+java -jar tools/Otkt-1.0.jar examples/demo.otkt  otkt-bin/
 ```
 
 ## 2. Instrument anytree
@@ -32,7 +31,7 @@ python3 examples/anytree-test.py
 ```
 
 ## 5. Run the analysis
-In `bin` there should be kieker logs. If not, go back to 4.
+In `/tmp` there should be kieker logs. If not, go back to 4.
 
 ### 5.1 Aggregated Deployment Call Tree
 ```bash
