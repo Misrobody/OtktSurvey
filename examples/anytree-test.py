@@ -1,5 +1,3 @@
-from otkt.otelinit import tracer
-
 from anytree import Node, RenderTree
 from anytree.exporter import DotExporter
 from anytree.iterators import PreOrderIter, LevelOrderIter
