@@ -1,4 +1,5 @@
 from otkt.otelinit import tracer
+from otkt.otelinit import tracer
 
 from anytree import Node, RenderTree
 from anytree.exporter import DotExporter

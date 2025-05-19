@@ -1,9 +1,11 @@
+from otkt.instrument import instrument
 from anytree import AnyNode, Node, NodeMixin
 from anytree.exporter import DictExporter
 
 from .helper import eq_
 
 
+@instrument
 def test_dict_exporter():
     """Dict Exporter."""
     root = AnyNode(id="root")
@@ -33,6 +35,7 @@ def test_dict_exporter():
     )
 
 
+@instrument
 def test_dict_exporter_node():
     """Dict Exporter."""
     root = Node("root")
@@ -66,6 +69,7 @@ def test_dict_exporter_node():
     )
 
 
+@instrument
 def test_dict_exporter_filter():
     """Dict Exporter."""
     root = Node("root")
@@ -98,10 +102,12 @@ def test_dict_exporter_filter():
     )
 
 
+@instrument
 def test_dict_exporter_mixin():
     """Dict Exporter."""
 
     class MyClass(NodeMixin):
+        @instrument
         def __init__(self, foo, parent=None):
             super().__init__()
             self.foo = foo

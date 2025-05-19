@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from shutil import which
 
 from pytest import mark
@@ -7,6 +8,7 @@ from anytree import Node
 from anytree.dotexport import RenderTreeGraph
 
 
+@instrument
 def test_tree1(tmp_path):
     """Tree1."""
     root = Node("root")
@@ -23,6 +25,7 @@ def test_tree1(tmp_path):
     assert_refdata(test_tree1, tmp_path)
 
 
+@instrument
 def test_tree2(tmp_path):
     """Tree2."""
     root = Node("root")
@@ -35,9 +38,11 @@ def test_tree2(tmp_path):
     s1c = Node("sub1C", parent=s1, edge=22)
     Node("sub1Ca", parent=s1c, edge=42)
 
+    @instrument
     def nodenamefunc(node):
         return f"{node.name}:{node.depth}"
 
+    @instrument
     def edgeattrfunc(node, child):
         return f'label="{node.name}:{child.name}"'
 
@@ -54,6 +59,7 @@ def test_tree2(tmp_path):
 
 
 @mark.skipif(which("dot") is None, reason="requires graphviz`s `dot` command")
+@instrument
 def test_tree_png(tmp_path):
     """Tree to png."""
     root = Node("root")

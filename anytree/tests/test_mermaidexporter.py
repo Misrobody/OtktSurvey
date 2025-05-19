@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from pytest import fixture
 from test2ref import assert_refdata
 
@@ -6,6 +7,7 @@ from anytree.exporter import MermaidExporter
 
 
 @fixture
+@instrument
 def root():
     root = Node("root")
     s0 = Node("sub0", parent=root, edge=2)
@@ -19,18 +21,22 @@ def root():
     yield root
 
 
+@instrument
 def test_tree(tmp_path, root):
     """Tree."""
     MermaidExporter(root).to_file(tmp_path / "tree.md")
     assert_refdata(test_tree, tmp_path)
 
 
+@instrument
 def test_tree_custom(tmp_path, root):
     """Tree Custom."""
 
+    @instrument
     def nodefunc(node):
         return f'("{node.name}")'
 
+    @instrument
     def edgefunc(node, child):
         return f"--{child.edge}-->"
 
@@ -48,18 +54,21 @@ def test_tree_custom(tmp_path, root):
     assert_refdata(test_tree_custom, tmp_path)
 
 
+@instrument
 def test_tree_filter(tmp_path, root):
     """Tree with Filter."""
     MermaidExporter(root, filter_=lambda node: node.name.startswith("sub")).to_file(tmp_path / "tree_filter.md")
     assert_refdata(test_tree_filter, tmp_path)
 
 
+@instrument
 def test_tree_stop(tmp_path, root):
     """Tree with stop."""
     MermaidExporter(root, stop=lambda node: node.name == "sub1").to_file(tmp_path / "tree_stop.md")
     assert_refdata(test_tree_stop, tmp_path)
 
 
+@instrument
 def test_tree_maxlevel(tmp_path, root):
     """Tree with maxlevel."""
     MermaidExporter(root, maxlevel=2).to_file(tmp_path / "tree_maxlevel.md")

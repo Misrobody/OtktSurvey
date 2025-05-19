@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 import json
 
 from .dictexporter import DictExporter
@@ -51,22 +52,26 @@ class JsonExporter:
               For instance, if you have unicode/ascii issues, please try `JsonExporter(..., ensure_ascii=False)`.
     """
 
+    @instrument
     def __init__(self, dictexporter=None, maxlevel=None, **kwargs):
         self.dictexporter = dictexporter
         self.maxlevel = maxlevel
         self.kwargs = kwargs
 
+    @instrument
     def _export(self, node):
         dictexporter = self.dictexporter or DictExporter()
         if self.maxlevel is not None:
             dictexporter.maxlevel = self.maxlevel
         return dictexporter.export(node)
 
+    @instrument
     def export(self, node):
         """Return JSON for tree starting at `node`."""
         data = self._export(node)
         return json.dumps(data, **self.kwargs)
 
+    @instrument
     def write(self, node, filehandle):
         """Write JSON to `filehandle` starting at `node`."""
         data = self._export(node)

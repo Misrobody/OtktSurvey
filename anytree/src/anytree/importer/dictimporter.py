@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from anytree import AnyNode
 from anytree.config import ASSERTIONS
 
@@ -30,13 +31,16 @@ class DictImporter:
     └── AnyNode(a='sub1')
     """
 
+    @instrument
     def __init__(self, nodecls=AnyNode):
         self.nodecls = nodecls
 
+    @instrument
     def import_(self, data):
         """Import tree from `data`."""
         return self.__import(data)
 
+    @instrument
     def __import(self, data, parent=None):
         if ASSERTIONS:  # pragma: no branch
             assert isinstance(data, dict)

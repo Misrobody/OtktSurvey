@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from anytree.config import ASSERTIONS
 
 from .abstractiter import AbstractIter
@@ -46,6 +47,7 @@ class ZigZagGroupIter(AbstractIter):
     """
 
     @staticmethod
+    @instrument
     def _iter(children, filter_, stop, maxlevel):
         if children:
             if ASSERTIONS:  # pragma: no branch

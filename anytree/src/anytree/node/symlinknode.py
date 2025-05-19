@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from .symlinknodemixin import SymlinkNodeMixin
 from .util import _repr
 
@@ -42,6 +43,7 @@ class SymlinkNode(SymlinkNodeMixin):
     9
     """
 
+    @instrument
     def __init__(self, target, parent=None, children=None, **kwargs):
         self.target = target
         self.target.__dict__.update(kwargs)
@@ -49,5 +51,6 @@ class SymlinkNode(SymlinkNodeMixin):
         if children:
             self.children = children
 
+    @instrument
     def __repr__(self):
         return _repr(self, [repr(self.target)], nameblacklist=("target",))

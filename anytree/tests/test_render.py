@@ -1,6 +1,8 @@
+from otkt.instrument import instrument
 import anytree
 
 
+@instrument
 def test_render_str():
     """Render string cast."""
     root = anytree.Node("root")
@@ -26,6 +28,7 @@ def test_render_str():
     ]
 
 
+@instrument
 def test_render_repr():
     """Render representation."""
     root = anytree.Node("root")
@@ -35,6 +38,7 @@ def test_render_repr():
     assert repr(r) == "RenderTree(Node('/root'), style=ContStyle(), childiter=<class 'list'>)"
 
 
+@instrument
 def test_render():
     """Rendering."""
     root = anytree.Node("root", lines=["c0fe", "c0de"])
@@ -53,6 +57,7 @@ def test_render():
         ("╚══ ", s1),
     ]
 
+    @instrument
     def multi(root):
         for pre, fill, node in anytree.RenderTree(root):
             yield f"{pre}{node.lines[0]}", node
@@ -73,6 +78,7 @@ def test_render():
     ]
 
 
+@instrument
 def test_maxlevel():
     root = anytree.Node("root", lines=["c0fe", "c0de"])
     s0 = anytree.Node("sub0", parent=root, lines=["ha", "ba"])
@@ -89,6 +95,7 @@ def test_maxlevel():
     ]
 
 
+@instrument
 def test_asciistyle():
     style = anytree.AsciiStyle()
     assert style.vertical == "|   "
@@ -96,6 +103,7 @@ def test_asciistyle():
     assert style.end == "+-- "
 
 
+@instrument
 def test_contstyle():
     style = anytree.ContStyle()
     assert style.vertical == "\u2502   "
@@ -103,6 +111,7 @@ def test_contstyle():
     assert style.end == "\u2514\u2500\u2500 "
 
 
+@instrument
 def test_controundstyle():
     style = anytree.ContRoundStyle()
     assert style.vertical == "\u2502   "
@@ -110,6 +119,7 @@ def test_controundstyle():
     assert style.end == "\u2570\u2500\u2500 "
 
 
+@instrument
 def test_doublestyle():
     style = anytree.DoubleStyle()
     assert style.vertical == "\u2551   "
@@ -117,6 +127,7 @@ def test_doublestyle():
     assert style.end == "\u255a\u2550\u2550 "
 
 
+@instrument
 def test_by_attr():
     """By attr."""
     root = anytree.Node("root", lines=["root"])
@@ -150,10 +161,12 @@ def test_by_attr():
     ]
 
 
+@instrument
 def test_repr():
     """Repr."""
 
     class ReprNode(anytree.Node):
+        @instrument
         def __repr__(self):
             return f"{self.name}\n{self.name}"
 

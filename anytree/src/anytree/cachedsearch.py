@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 """
 Node Searching with Cache.
 
@@ -13,10 +14,13 @@ except ImportError:
     from functools import wraps
 
     # dummy decorator which does NOT cache
+    @instrument
     def _cache(size):
         # pylint: disable=W0613
+        @instrument
         def decorator(func):
             @wraps(func)
+            @instrument
             def wrapped(*args, **kwargs):
                 return func(*args, **kwargs)
 
@@ -29,24 +33,28 @@ CACHE_SIZE = 32
 
 
 @_cache(CACHE_SIZE)
+@instrument
 def findall(node, filter_=None, stop=None, maxlevel=None, mincount=None, maxcount=None):
     """Identical to :any:`search.findall` but cached."""
     return search.findall(node, filter_=filter_, stop=stop, maxlevel=maxlevel, mincount=mincount, maxcount=maxcount)
 
 
 @_cache(CACHE_SIZE)
+@instrument
 def findall_by_attr(node, value, name="name", maxlevel=None, mincount=None, maxcount=None):
     """Identical to :any:`search.findall_by_attr` but cached."""
     return search.findall_by_attr(node, value, name=name, maxlevel=maxlevel, mincount=mincount, maxcount=maxcount)
 
 
 @_cache(CACHE_SIZE)
+@instrument
 def find(node, filter_=None, stop=None, maxlevel=None):
     """Identical to :any:`search.find` but cached."""
     return search.find(node, filter_=filter_, stop=stop, maxlevel=maxlevel)
 
 
 @_cache(CACHE_SIZE)
+@instrument
 def find_by_attr(node, value, name="name", maxlevel=None):
     """Identical to :any:`search.find_by_attr` but cached."""
     return search.find_by_attr(node, value, name=name, maxlevel=maxlevel)

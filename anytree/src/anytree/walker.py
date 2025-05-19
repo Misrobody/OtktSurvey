@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from .config import ASSERTIONS
 
 
@@ -5,6 +6,7 @@ class Walker:
     """Walk from one node to another."""
 
     @staticmethod
+    @instrument
     def walk(start, end):
         """
         Walk from `start` node to `end` node.
@@ -86,6 +88,7 @@ class Walker:
         return upwards, common[-1], down
 
     @staticmethod
+    @instrument
     def __calc_common(start, end):
         return tuple(si for si, ei in zip(start, end) if si is ei)
 

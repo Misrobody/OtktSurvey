@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from .nodemixin import NodeMixin
 
 
@@ -44,6 +45,7 @@ class SymlinkNodeMixin(NodeMixin):
     9
     """
 
+    @instrument
     def __getattr__(self, name):
         if name in ("_NodeMixin__parent", "_NodeMixin__children"):
             return super().__getattr__(name)
@@ -51,6 +53,7 @@ class SymlinkNodeMixin(NodeMixin):
             raise AttributeError(name)
         return getattr(self.target, name)
 
+    @instrument
     def __setattr__(self, name, value):
         if name in ("_NodeMixin__parent", "_NodeMixin__children", "parent", "children", "target"):
             super().__setattr__(name, value)

@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 """
 The methods of the `NodeMixin` class should not access the user class special methods.
 
@@ -8,6 +9,7 @@ from anytree import NodeMixin
 
 
 class MyNode(NodeMixin):
+    @instrument
     def __init__(self, name, parent=None, children=None):
         super(MyNode, self).__init__()
         self.name = name
@@ -28,6 +30,7 @@ from anytree import NodeMixin
 
 
 class MyMapping(NodeMixin, collections.abc.Mapping):
+    @instrument
     def __init__(self, name, parent=None, children=None):
         super(MyMapping, self).__init__()
         self.name = name
@@ -35,15 +38,18 @@ class MyMapping(NodeMixin, collections.abc.Mapping):
         if children:
             self.children = children
 
+    @instrument
     def __iter__(self):
         for child in self.children:
             yield child
             for item in child:
                 yield item
 
+    @instrument
     def __len__(self):
         return len(list(iter(self)))
 
+    @instrument
     def __getitem__(self, name):
         for child in self:
             if child.name == name:
@@ -183,17 +189,20 @@ SPECIAL_METHODS = [
 SPECIAL_METHODS += [attr for attr in ["__bytes__", "__unicode__", "__dir"] if hasattr(object, attr)]
 
 
+@instrument
 def prevent_access(attr, *args, **kwargs):
     raise AssertionError("invalid call to " + attr)
 
 
 class MyNode(NodeMixin):
     @staticmethod
+    @instrument
     def __new__(cls, *args, **kwargs):
         for attr in SPECIAL_METHODS:
             setattr(cls, attr, functools.partial(prevent_access, attr))
         return super(NodeMixin, cls).__new__(cls)
 
+    @instrument
     def __init__(self, name, parent=None, children=None):
         super().__init__()
         self.name = name
@@ -205,6 +214,7 @@ class MyNode(NodeMixin):
 class TestConsistency(unittest.TestCase):
     """Control the access to special methods."""
 
+    @instrument
     def setUp(self):
         super().setUp()
         self.root1 = MyNode("root1")
@@ -213,95 +223,125 @@ class TestConsistency(unittest.TestCase):
         self.child2b = MyNode("child2b", parent=self.child1)
         self.other = MyNode("other")
 
+    @instrument
     def test_parent__root1(self):
         _ = self.root1.parent
 
+    @instrument
     def test_parent__setter__root1(self):
         self.root1.parent = self.other
 
+    @instrument
     def test_children__root1(self):
         _ = self.root1.children
 
+    @instrument
     def test_children__setter__root1(self):
         self.root1.children = [self.other]
 
+    @instrument
     def test_path__root1(self):
         _ = self.root1.path
 
+    @instrument
     def test_iter_path_reverse__root1(self):
         for _ in self.root1.iter_path_reverse():
             pass
 
+    @instrument
     def test_ancestors__root1(self):
         _ = self.root1.ancestors
 
+    @instrument
     def test_descendants__root1(self):
         _ = self.root1.descendants
 
+    @instrument
     def test_root__root1(self):
         _ = self.root1.root
 
+    @instrument
     def test_siblings__root1(self):
         _ = self.root1.siblings
 
+    @instrument
     def test_leaves__root1(self):
         _ = self.root1.leaves
 
+    @instrument
     def test_is_leaf__root1(self):
         _ = self.root1.is_leaf
 
+    @instrument
     def test_is_root__root1(self):
         _ = self.root1.is_root
 
+    @instrument
     def test_height__root1(self):
         _ = self.root1.height
 
+    @instrument
     def test_depth__root1(self):
         _ = self.root1.depth
 
+    @instrument
     def test_parent__child2b(self):
         _ = self.child2b.parent
 
+    @instrument
     def test_parent__setter__child2b(self):
         self.child2b.parent = self.other
 
+    @instrument
     def test_children__child2b(self):
         _ = self.child2b.children
 
+    @instrument
     def test_children__setter__child2b(self):
         self.child2b.children = [self.other]
 
+    @instrument
     def test_path__child2b(self):
         _ = self.child2b.path
 
+    @instrument
     def test_iter_path_reverse__child2b(self):
         for _ in self.child2b.iter_path_reverse():
             pass
 
+    @instrument
     def test_ancestors__child2b(self):
         _ = self.child2b.ancestors
 
+    @instrument
     def test_descendants__child2b(self):
         _ = self.child2b.descendants
 
+    @instrument
     def test_root__child2b(self):
         _ = self.child2b.root
 
+    @instrument
     def test_siblings__child2b(self):
         _ = self.child2b.siblings
 
+    @instrument
     def test_leaves__child2b(self):
         _ = self.child2b.leaves
 
+    @instrument
     def test_is_leaf__child2b(self):
         _ = self.child2b.is_leaf
 
+    @instrument
     def test_is_root__child2b(self):
         _ = self.child2b.is_root
 
+    @instrument
     def test_height__child2b(self):
         _ = self.child2b.height
 
+    @instrument
     def test_depth__child2b(self):
         _ = self.child2b.depth
 
@@ -311,6 +351,7 @@ class MyMapping(NodeMixin, Mapping):
     This class is used to demonstrate a possible implementation which defines some special methods.
     """
 
+    @instrument
     def __init__(self, name, parent=None, children=None):
         super().__init__()
         self.name = name
@@ -318,16 +359,19 @@ class MyMapping(NodeMixin, Mapping):
         if children:
             self.children = children
 
+    @instrument
     def __iter__(self):
         """Iterate over all children recursively."""
         for child in self.children:
             yield child
             yield from child
 
+    @instrument
     def __len__(self):
         """Total number of children."""
         return len(list(iter(self)))
 
+    @instrument
     def __getitem__(self, name):
         for child in self:
             if child.name == name:
@@ -336,6 +380,7 @@ class MyMapping(NodeMixin, Mapping):
 
 
 class TestMyMapping(unittest.TestCase):
+    @instrument
     def setUp(self):
         super().setUp()
         self.root1 = MyMapping("root1")
@@ -343,14 +388,17 @@ class TestMyMapping(unittest.TestCase):
         self.child2a = MyMapping("child2a", parent=self.child1)
         self.child2b = MyMapping("child2b", parent=self.child1)
 
+    @instrument
     def test_iter(self):
         expected_list = [self.child1, self.child2a, self.child2b]
         for actual, expected in zip(iter(self.root1), expected_list):
             self.assertIs(actual, expected)
 
+    @instrument
     def test_len(self):
         self.assertEqual(len(self.root1), 3)
 
+    @instrument
     def test_getitem(self):
         self.assertIs(self.root1["child1"], self.child1)
         self.assertIs(self.root1["child2a"], self.child2a)

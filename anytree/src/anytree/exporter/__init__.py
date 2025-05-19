@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 """Exporter."""
 
 from .dictexporter import DictExporter

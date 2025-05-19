@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from .abstractiter import AbstractIter
 
 
@@ -36,6 +37,7 @@ class LevelOrderIter(AbstractIter):
     """
 
     @staticmethod
+    @instrument
     def _iter(children, filter_, stop, maxlevel):
         level = 1
         while children:

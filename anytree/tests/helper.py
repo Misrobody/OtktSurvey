@@ -1,14 +1,17 @@
+from otkt.instrument import instrument
 """Helper Methods for testing."""
 
 from contextlib import contextmanager
 
 
+@instrument
 def eq_(one, other):
     assert one == other, f"{one} != {other}"
 
 
 # hack own assert_raises, because py26 has a different implementation
 @contextmanager
+@instrument
 def assert_raises(exccls, msg):
     """Check exception of class `exccls` to be raised with message `msg`."""
     try:

@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 import warnings
 
 from anytree.config import ASSERTIONS
@@ -78,6 +79,7 @@ class NodeMixin:
     separator = "/"
 
     @property
+    @instrument
     def parent(self):
         """
         Parent Node.
@@ -118,6 +120,7 @@ class NodeMixin:
         return None
 
     @parent.setter
+    @instrument
     def parent(self, value):
         if value is not None and not isinstance(value, (NodeMixin, LightNodeMixin)):
             msg = f"Parent node {value!r} is not of type 'NodeMixin'."
@@ -131,6 +134,7 @@ class NodeMixin:
             self.__detach(parent)
             self.__attach(value)
 
+    @instrument
     def __check_loop(self, node):
         if node is not None:
             if node is self:
@@ -140,6 +144,7 @@ class NodeMixin:
                 msg = "Cannot set parent. %r is parent of %r."
                 raise LoopError(msg % (self, node))
 
+    @instrument
     def __detach(self, parent):
         # pylint: disable=W0212,W0238
         if parent is not None:
@@ -153,6 +158,7 @@ class NodeMixin:
             # ATOMIC END
             self._post_detach(parent)
 
+    @instrument
     def __attach(self, parent):
         # pylint: disable=W0212
         if parent is not None:
@@ -167,12 +173,14 @@ class NodeMixin:
             self._post_attach(parent)
 
     @property
+    @instrument
     def __children_or_empty(self):
         if not hasattr(self, "_NodeMixin__children"):
             self.__children = []
         return self.__children
 
     @property
+    @instrument
     def children(self):
         """
         All child nodes.
@@ -224,6 +232,7 @@ class NodeMixin:
         return tuple(self.__children_or_empty)
 
     @staticmethod
+    @instrument
     def __check_children(children):
         seen = set()
         for child in children:
@@ -238,6 +247,7 @@ class NodeMixin:
                 raise TreeError(msg)
 
     @children.setter  # type: ignore[no-redef]
+    @instrument
     def children(self, children):
         # convert iterable to tuple
         children = tuple(children)
@@ -258,6 +268,7 @@ class NodeMixin:
         # ATOMIC end
 
     @children.deleter  # type: ignore[no-redef]
+    @instrument
     def children(self):
         children = self.children
         self._pre_detach_children(children)
@@ -267,19 +278,24 @@ class NodeMixin:
             assert len(self.children) == 0
         self._post_detach_children(children)
 
+    @instrument
     def _pre_detach_children(self, children):
         """Method call before detaching `children`."""
 
+    @instrument
     def _post_detach_children(self, children):
         """Method call after detaching `children`."""
 
+    @instrument
     def _pre_attach_children(self, children):
         """Method call before attaching `children`."""
 
+    @instrument
     def _post_attach_children(self, children):
         """Method call after attaching `children`."""
 
     @property
+    @instrument
     def path(self):
         """
         Path from root node down to this `Node`.
@@ -297,6 +313,7 @@ class NodeMixin:
         """
         return self._path
 
+    @instrument
     def iter_path_reverse(self):
         """
         Iterate up the tree from the current node to the root node.
@@ -324,10 +341,12 @@ class NodeMixin:
             node = node.parent
 
     @property
+    @instrument
     def _path(self):
         return tuple(reversed(list(self.iter_path_reverse())))
 
     @property
+    @instrument
     def ancestors(self):
         """
         All parent nodes and their parent nodes.
@@ -348,6 +367,7 @@ class NodeMixin:
         return self.parent.path
 
     @property
+    @instrument
     def anchestors(self):
         """
         All parent nodes and their parent nodes - see :any:`ancestors`.
@@ -359,6 +379,7 @@ class NodeMixin:
         return self.ancestors
 
     @property
+    @instrument
     def descendants(self):
         """
         All child nodes and all their child nodes.
@@ -379,6 +400,7 @@ class NodeMixin:
         return tuple(PreOrderIter(self))[1:]
 
     @property
+    @instrument
     def root(self):
         """
         Tree Root Node.
@@ -400,6 +422,7 @@ class NodeMixin:
         return node
 
     @property
+    @instrument
     def siblings(self):
         """
         Tuple of nodes with the same parent.
@@ -425,6 +448,7 @@ class NodeMixin:
         return tuple(node for node in parent.children if node is not self)
 
     @property
+    @instrument
     def leaves(self):
         """
         Tuple of all leaf nodes.
@@ -443,6 +467,7 @@ class NodeMixin:
         return tuple(PreOrderIter(self, filter_=lambda node: node.is_leaf))
 
     @property
+    @instrument
     def is_leaf(self):
         """
         `Node` has no children (External Node).
@@ -461,6 +486,7 @@ class NodeMixin:
         return len(self.__children_or_empty) == 0
 
     @property
+    @instrument
     def is_root(self):
         """
         `Node` is tree root.
@@ -479,6 +505,7 @@ class NodeMixin:
         return self.parent is None
 
     @property
+    @instrument
     def height(self):
         """
         Number of edges on the longest path to a leaf `Node`.
@@ -500,6 +527,7 @@ class NodeMixin:
         return 0
 
     @property
+    @instrument
     def depth(self):
         """
         Number of edges to the root `Node`.
@@ -522,6 +550,7 @@ class NodeMixin:
         return depth
 
     @property
+    @instrument
     def size(self):
         """
         Tree size --- the number of nodes in tree starting at this node.
@@ -547,14 +576,18 @@ class NodeMixin:
             continue
         return size
 
+    @instrument
     def _pre_detach(self, parent):
         """Method call before detaching from `parent`."""
 
+    @instrument
     def _post_detach(self, parent):
         """Method call after detaching from `parent`."""
 
+    @instrument
     def _pre_attach(self, parent):
         """Method call before attaching to `parent`."""
 
+    @instrument
     def _post_attach(self, parent):
         """Method call after attaching to `parent`."""

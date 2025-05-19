@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from anytree import (
     LevelGroupOrderIter,
     LevelOrderGroupIter,
@@ -11,6 +12,7 @@ from anytree import (
 from .helper import eq_
 
 
+@instrument
 def test_preorder():
     """PreOrderIter."""
     f = Node("f")
@@ -35,6 +37,7 @@ def test_preorder():
     eq_(list(it), [a, d, c, e, g, i, h])
 
 
+@instrument
 def test_postorder():
     """PostOrderIter."""
     f = Node("f")
@@ -59,6 +62,7 @@ def test_postorder():
     eq_(list(it), [e, d, b, h, i, g, f])
 
 
+@instrument
 def test_levelorder():
     """LevelOrderIter."""
     f = Node("f")
@@ -83,6 +87,7 @@ def test_levelorder():
     eq_(list(it), [g, a, d, i, c, e, h])
 
 
+@instrument
 def test_levelgrouporder():
     """LevelGroupOrderIter."""
     f = Node("f")
@@ -107,6 +112,7 @@ def test_levelgrouporder():
     eq_(list(it), [(a, d, i), (c, e, h)])
 
 
+@instrument
 def test_levelordergroup():
     """LevelOrderGroupIter."""
     f = Node("f")
@@ -131,6 +137,7 @@ def test_levelordergroup():
     eq_(list(it), [(a, d, i), (c, e, h)])
 
 
+@instrument
 def test_zigzaggroup():
     """ZigZagGroupIter."""
     f = Node("f")

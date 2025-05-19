@@ -1,8 +1,10 @@
+from otkt.instrument import instrument
 from anytree import Node, RenderTree
 
 from .helper import eq_
 
 
+@instrument
 def test_stackoverflow():
     """Example from stackoverflow."""
     udo = Node("Udo")

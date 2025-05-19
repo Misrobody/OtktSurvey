@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 import re
 
 from anytree.iterators.preorderiter import PreOrderIter
@@ -19,12 +20,14 @@ class Resolver:
 
     _match_cache = {}  # type: ignore[var-annotated]  # noqa: RUF012
 
+    @instrument
     def __init__(self, pathattr="name", ignorecase=False, relax=False):
         super().__init__()
         self.pathattr = pathattr
         self.ignorecase = ignorecase
         self.relax = relax
 
+    @instrument
     def get(self, node, path):
         """
         Return instance at `path`.
@@ -119,6 +122,7 @@ class Resolver:
                 node = self.__get(node, part)
         return node
 
+    @instrument
     def __get(self, node, name):
         namestr = str(name)
         for child in node.children:
@@ -128,6 +132,7 @@ class Resolver:
             return None
         raise ChildResolverError(node, name, self.pathattr)
 
+    @instrument
     def glob(self, node, path):
         """
         Return instances at `path` supporting wildcards.
@@ -210,6 +215,7 @@ class Resolver:
             return []
         return self.__glob(node, parts)
 
+    @instrument
     def __start(self, node, path, cmp_):
         sep = node.separator
         parts = path.split(sep)
@@ -231,6 +237,7 @@ class Resolver:
             parts.pop(0)
         return node, parts
 
+    @instrument
     def __glob(self, node, parts):
         if ASSERTIONS:  # pragma: no branch
             assert node is not None
@@ -270,6 +277,7 @@ class Resolver:
             raise ChildResolverError(node, name, self.pathattr)
         return matches
 
+    @instrument
     def __find(self, node, pat, remainder):
         matches = []
         for child in node.children:
@@ -286,10 +294,12 @@ class Resolver:
         return matches
 
     @staticmethod
+    @instrument
     def is_wildcard(path):
         """Return `True` is a wildcard."""
         return "?" in path or "*" in path
 
+    @instrument
     def __match(self, name, pat):
         k = (pat, self.ignorecase)
         try:
@@ -304,12 +314,14 @@ class Resolver:
             Resolver._match_cache[k] = re_pat = re.compile(res, flags=flags)
         return re_pat.match(name) is not None
 
+    @instrument
     def __cmp(self, name, pat):
         if self.ignorecase:
             return name.upper() == pat.upper()
         return name == pat
 
     @staticmethod
+    @instrument
     def __translate(pat):
         re_pat = ""
         for char in pat:
@@ -323,6 +335,7 @@ class Resolver:
 
 
 class ResolverError(RuntimeError):
+    @instrument
     def __init__(self, node, child, msg):
         """Resolve Error at `node` handling `child`."""
         super().__init__(msg)
@@ -331,6 +344,7 @@ class ResolverError(RuntimeError):
 
 
 class RootResolverError(ResolverError):
+    @instrument
     def __init__(self, root):
         """Root Resolve Error, cannot go above root node."""
         msg = f"Cannot go above root node {root!r}"
@@ -338,6 +352,7 @@ class RootResolverError(ResolverError):
 
 
 class ChildResolverError(ResolverError):
+    @instrument
     def __init__(self, node, child, pathattr):
         """Child Resolve Error at `node` handling `child`."""
         names = [repr(_getattr(c, pathattr)) for c in node.children]
@@ -345,5 +360,6 @@ class ChildResolverError(ResolverError):
         super().__init__(node, child, msg)
 
 
+@instrument
 def _getattr(node, name):
     return str(getattr(node, name, None))

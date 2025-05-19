@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from anytree import LoopError, Node
 
 from .helper import assert_raises
@@ -6,39 +7,48 @@ from .helper import assert_raises
 class TNode(Node):
     TRACKING = []  # noqa: RUF012
 
+    @instrument
     def _pre_detach(self, parent):
         """Method call before detaching from `parent`."""
         self.TRACKING.append(f"_pre_detach({self.name!r}, {parent.name!r})")
 
+    @instrument
     def _post_detach(self, parent):
         """Method call after detaching from `parent`."""
         self.TRACKING.append(f"_post_detach({self.name!r}, {parent.name!r})")
 
+    @instrument
     def _pre_attach(self, parent):
         """Method call before attaching to `parent`."""
         self.TRACKING.append(f"_pre_attach({self.name!r}, {parent.name!r})")
 
+    @instrument
     def _post_attach(self, parent):
         """Method call after attaching to `parent`."""
         self.TRACKING.append(f"_post_attach({self.name!r}, {parent.name!r})")
 
+    @instrument
     def _pre_detach_children(self, children):
         """Method call before detaching `children`."""
         self.TRACKING.append(f"_pre_detach_children({self.name!r}, {tuple(child.name for child in children)!r})")
 
+    @instrument
     def _post_detach_children(self, children):
         """Method call after detaching `children`."""
         self.TRACKING.append(f"_post_detach_children({self.name!r}, {tuple(child.name for child in children)!r})")
 
+    @instrument
     def _pre_attach_children(self, children):
         """Method call before attaching `children`."""
         self.TRACKING.append(f"_pre_attach_children({self.name!r}, {tuple(child.name for child in children)!r})")
 
+    @instrument
     def _post_attach_children(self, children):
         """Method call after attaching `children`."""
         self.TRACKING.append(f"_post_attach_children({self.name!r}, {tuple(child.name for child in children)!r})")
 
 
+@instrument
 def test_parent_child():
     """A tree parent and child attributes."""
     root = TNode("root")
@@ -91,6 +101,7 @@ def test_parent_child():
     TNode.TRACKING.clear()
 
 
+@instrument
 def test_detach_children():
     root = TNode("root")
     s0 = TNode("sub0", parent=root)
@@ -149,6 +160,7 @@ def test_detach_children():
     TNode.TRACKING.clear()
 
 
+@instrument
 def test_children_setter():
     root = TNode("root")
     s0 = TNode("sub0")

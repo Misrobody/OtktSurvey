@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 """
 Node Searching.
 
@@ -8,6 +9,7 @@ Node Searching.
 from anytree.iterators import PreOrderIter
 
 
+@instrument
 def findall(node, filter_=None, stop=None, maxlevel=None, mincount=None, maxcount=None):
     """
     Search nodes matching `filter_` but stop at `maxlevel` or `stop`.
@@ -66,6 +68,7 @@ def findall(node, filter_=None, stop=None, maxlevel=None, mincount=None, maxcoun
     return _findall(node, filter_=filter_, stop=stop, maxlevel=maxlevel, mincount=mincount, maxcount=maxcount)
 
 
+@instrument
 def findall_by_attr(node, value, name="name", maxlevel=None, mincount=None, maxcount=None):
     """
     Search nodes with attribute `name` having `value` but stop at `maxlevel`.
@@ -117,6 +120,7 @@ def findall_by_attr(node, value, name="name", maxlevel=None, mincount=None, maxc
     )
 
 
+@instrument
 def find(node, filter_=None, stop=None, maxlevel=None):
     """
     Search for *single* node matching `filter_` but stop at `maxlevel` or `stop`.
@@ -165,6 +169,7 @@ def find(node, filter_=None, stop=None, maxlevel=None):
     return _find(node, filter_=filter_, stop=stop, maxlevel=maxlevel)
 
 
+@instrument
 def find_by_attr(node, value, name="name", maxlevel=None):
     """
     Search for *single* node with attribute `name` having `value` but stop at `maxlevel`.
@@ -212,11 +217,13 @@ def find_by_attr(node, value, name="name", maxlevel=None):
     return _find(node, filter_=lambda n: _filter_by_name(n, name, value), maxlevel=maxlevel)
 
 
+@instrument
 def _find(node, filter_, stop=None, maxlevel=None):
     items = _findall(node, filter_, stop=stop, maxlevel=maxlevel, maxcount=1)
     return items[0] if items else None
 
 
+@instrument
 def _findall(node, filter_, stop=None, maxlevel=None, mincount=None, maxcount=None):
     result = tuple(PreOrderIter(node, filter_, stop, maxlevel))
     resultlen = len(result)
@@ -229,6 +236,7 @@ def _findall(node, filter_, stop=None, maxlevel=None, mincount=None, maxcount=No
     return result
 
 
+@instrument
 def _filter_by_name(node, name, value):
     try:
         return getattr(node, name) == value
@@ -237,6 +245,7 @@ def _filter_by_name(node, name, value):
 
 
 class CountError(RuntimeError):
+    @instrument
     def __init__(self, msg, result):
         """Error raised on `mincount` or `maxcount` mismatch."""
         if result:

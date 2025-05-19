@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from enum import IntEnum
 
 from pytest import raises
@@ -8,6 +9,7 @@ from anytree import Node, Resolver
 from .helper import assert_raises
 
 
+@instrument
 def test_get():
     """Get."""
     top = at.Node("top", parent=None)
@@ -35,6 +37,7 @@ def test_get():
         r.get(sub0sub0, "/bar")
 
 
+@instrument
 def test_get_relaxed():
     """Get in relaxed mode."""
     top = at.Node("top", parent=None)
@@ -58,6 +61,7 @@ def test_get_relaxed():
     assert r.get(sub0sub0, "/bar") is None
 
 
+@instrument
 def test_glob():
     """Wildcard."""
     top = at.Node("top", parent=None)
@@ -108,6 +112,7 @@ def test_glob():
         r.glob(top, "/sub0/**/sub0")
 
 
+@instrument
 def test_glob_relaxed():
     """Wildcard relaxed."""
     top = at.Node("top", parent=None)
@@ -153,6 +158,7 @@ def test_glob_relaxed():
     assert r.glob(top, "/sub0/**/sub0") == []
 
 
+@instrument
 def test_glob_cache():
     """Wildcard Cache."""
     root = at.Node("root")
@@ -171,6 +177,7 @@ def test_glob_cache():
     assert len(at.Resolver._match_cache) == 1
 
 
+@instrument
 def test_same_name():
     """Same Name."""
     root = at.Node("root")
@@ -181,6 +188,7 @@ def test_same_name():
     assert r.glob(root, "sub") == [sub0, sub1]
 
 
+@instrument
 def test_ignorecase():
     """Case insensitive resolver."""
     root = at.Node("root")
@@ -196,6 +204,7 @@ def test_ignorecase():
     assert r.glob(sub0, "../*1") == [sub1]
 
 
+@instrument
 def test_enum():
     class Animals(IntEnum):
         Mammal = 1
@@ -212,6 +221,7 @@ def test_enum():
     assert r.glob(root, "/ANIMAL/*/*") == [cat, dog]
 
 
+@instrument
 def test_glob_consistency():
     """Ensure Consistency."""
     node = at.Node("root")
@@ -251,6 +261,7 @@ def test_glob_consistency():
         assert resolver.get(node, "/bla")
 
 
+@instrument
 def test_glob_consistency_relax():
     """Ensure Consistency on relaxed."""
     node = at.Node("root")

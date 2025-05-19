@@ -1,8 +1,10 @@
+from otkt.instrument import instrument
 from anytree import Node, PostOrderIter, PreOrderIter, SymlinkNode
 
 from .helper import eq_
 
 
+@instrument
 def test_symlink():
     root = Node("root")
     s0 = Node("sub0", parent=root)

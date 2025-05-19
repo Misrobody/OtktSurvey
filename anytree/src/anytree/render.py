@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 """
 Tree Rendering.
 
@@ -28,6 +29,7 @@ class AbstractStyle:
         end: Chars for the last branch.
     """
 
+    @instrument
     def __init__(self, vertical, cont, end):
         super().__init__()
         self.vertical = vertical
@@ -39,10 +41,12 @@ class AbstractStyle:
             )
 
     @property
+    @instrument
     def empty(self):
         """Empty string as placeholder."""
         return " " * len(self.end)
 
+    @instrument
     def __repr__(self):
         classname = self.__class__.__name__
         return f"{classname}()"
@@ -67,6 +71,7 @@ class AsciiStyle(AbstractStyle):
     +-- Node('/root/sub1')
     """
 
+    @instrument
     def __init__(self):
         super().__init__("|   ", "|-- ", "+-- ")
 
@@ -90,6 +95,7 @@ class ContStyle(AbstractStyle):
     └── Node('/root/sub1')
     """
 
+    @instrument
     def __init__(self):
         super().__init__("\u2502   ", "\u251c\u2500\u2500 ", "\u2514\u2500\u2500 ")
 
@@ -116,6 +122,7 @@ class ContRoundStyle(AbstractStyle):
     ╰── Node('/root/sub1')
     """
 
+    @instrument
     def __init__(self):
         super().__init__("\u2502   ", "\u251c\u2500\u2500 ", "\u2570\u2500\u2500 ")
 
@@ -140,6 +147,7 @@ class DoubleStyle(AbstractStyle):
 
     """
 
+    @instrument
     def __init__(self):
         super().__init__("\u2551   ", "\u2560\u2550\u2550 ", "\u255a\u2550\u2550 ")
 
@@ -260,6 +268,7 @@ class RenderTree:
     └── Z
     """
 
+    @instrument
     def __init__(self, node, style=CONT_STYLE, childiter=list, maxlevel=None):
         if not isinstance(style, AbstractStyle):
             style = style()
@@ -268,9 +277,11 @@ class RenderTree:
         self.childiter = childiter
         self.maxlevel = maxlevel
 
+    @instrument
     def __iter__(self):
         return self.__next(self.node, ())
 
+    @instrument
     def __next(self, node, continues, level=0):
         yield RenderTree.__item(node, continues, self.style)
         level += 1
@@ -282,6 +293,7 @@ class RenderTree:
                     yield from self.__next(child, (*continues, not is_last), level=level)
 
     @staticmethod
+    @instrument
     def __item(node, continues, style):
         if not continues:
             return Row("", "", node)
@@ -292,7 +304,9 @@ class RenderTree:
         fill = "".join(items)
         return Row(pre, fill, node)
 
+    @instrument
     def __str__(self):
+        @instrument
         def get():
             for row in self:
                 lines = repr(row.node).splitlines() or [""]
@@ -302,11 +316,13 @@ class RenderTree:
 
         return "\n".join(get())
 
+    @instrument
     def __repr__(self):
         classname = self.__class__.__name__
         args = [repr(self.node), f"style={self.style!r}", f"childiter={self.childiter!r}"]
         return "{}({})".format(classname, ", ".join(args))
 
+    @instrument
     def by_attr(self, attrname="name"):
         """
         Return rendered tree with node attribute `attrname`.
@@ -334,6 +350,7 @@ class RenderTree:
 
         """
 
+        @instrument
         def get():
             if callable(attrname):
                 for row in self:
@@ -347,6 +364,7 @@ class RenderTree:
         return "\n".join(get())
 
 
+@instrument
 def _format_row_any(row, attr):
     if isinstance(attr, (list, tuple)):
         lines = attr or [""]
@@ -357,6 +375,7 @@ def _format_row_any(row, attr):
         yield f"{row.fill}{line}"
 
 
+@instrument
 def _is_last(iterable):
     iter_ = iter(iterable)
     try:

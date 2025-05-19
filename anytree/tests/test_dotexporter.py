@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from pytest import fixture
 from test2ref import assert_refdata
 
@@ -6,6 +7,7 @@ from anytree.exporter import DotExporter
 
 
 @fixture
+@instrument
 def root():
     root = Node("root")
     s0 = Node("sub0", parent=root, edge=2)
@@ -19,24 +21,30 @@ def root():
     yield root
 
 
+@instrument
 def test_tree(tmp_path, root):
     """Tree."""
     DotExporter(root).to_dotfile(tmp_path / "tree.dot")
     assert_refdata(test_tree, tmp_path)
 
 
+@instrument
 def test_tree_custom(tmp_path, root):
     """Tree Custom."""
 
+    @instrument
     def nodenamefunc(node):
         return f"{node.name}:{node.depth}"
 
+    @instrument
     def edgeattrfunc(node, child):
         return f'label="{node.name}:{child.name}"'
 
+    @instrument
     def nodefunc(node):
         return f'("{node.name}")'
 
+    @instrument
     def edgefunc(node, child):
         return f"--{child.edge}-->"
 
@@ -50,24 +58,28 @@ def test_tree_custom(tmp_path, root):
     assert_refdata(test_tree_custom, tmp_path)
 
 
+@instrument
 def test_tree_filter(tmp_path, root):
     """Tree with Filter."""
     DotExporter(root, filter_=lambda node: node.name.startswith("sub")).to_dotfile(tmp_path / "tree_filter.dot")
     assert_refdata(test_tree_filter, tmp_path)
 
 
+@instrument
 def test_tree_stop(tmp_path, root):
     """Tree with stop."""
     DotExporter(root, stop=lambda node: node.name == "sub1").to_dotfile(tmp_path / "tree_stop.dot")
     assert_refdata(test_tree_stop, tmp_path)
 
 
+@instrument
 def test_tree_maxlevel(tmp_path, root):
     """Tree with maxlevel."""
     DotExporter(root, maxlevel=2).to_dotfile(tmp_path / "tree_maxlevel.dot")
     assert_refdata(test_tree_maxlevel, tmp_path)
 
 
+@instrument
 def test_esc():
     """Test proper escape of quotes."""
     n = Node(r'6"-6\"')

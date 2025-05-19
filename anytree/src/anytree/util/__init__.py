@@ -1,6 +1,8 @@
+from otkt.instrument import instrument
 """Utilities."""
 
 
+@instrument
 def commonancestors(*nodes):
     """
     Determine common ancestors of `nodes`.
@@ -34,6 +36,7 @@ def commonancestors(*nodes):
     return tuple(common)
 
 
+@instrument
 def leftsibling(node):
     """
     Return Left Sibling of `node`.
@@ -60,6 +63,7 @@ def leftsibling(node):
     return None
 
 
+@instrument
 def rightsibling(node):
     """
     Return Right Sibling of `node`.

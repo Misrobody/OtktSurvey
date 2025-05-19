@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from .abstractiter import AbstractIter
 
 
@@ -39,6 +40,7 @@ class PreOrderIter(AbstractIter):
     """
 
     @staticmethod
+    @instrument
     def _iter(children, filter_, stop, maxlevel):
         for child_ in children:
             if stop(child_):

@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from copy import deepcopy
 
 from anytree import Node, RenderTree
@@ -7,6 +8,7 @@ from anytree.importer import DictImporter
 from .helper import eq_
 
 
+@instrument
 def test_dict_importer():
     """Dict Importer."""
     importer = DictImporter()
@@ -39,6 +41,7 @@ def test_dict_importer():
     ]
 
 
+@instrument
 def test_dict_importer_node():
     """Dict Importer."""
     importer = DictImporter(Node)

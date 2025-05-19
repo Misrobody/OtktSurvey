@@ -1,3 +1,5 @@
+from otkt.instrument import instrument
+@instrument
 def _repr(node, args=None, nameblacklist=None):
     classname = node.__class__.__name__
     args = args or []

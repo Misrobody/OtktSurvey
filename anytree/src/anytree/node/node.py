@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from .nodemixin import NodeMixin
 from .util import _repr
 
@@ -69,6 +70,7 @@ class Node(NodeMixin):
             └── Node('/root/sub1/sub1C/sub1Ca')
     """
 
+    @instrument
     def __init__(self, name, parent=None, children=None, **kwargs):
         self.__dict__.update(kwargs)
         self.name = name
@@ -76,6 +78,7 @@ class Node(NodeMixin):
         if children:
             self.children = children
 
+    @instrument
     def __repr__(self):
         args = ["{!r}".format(self.separator.join([""] + [str(node.name) for node in self.path]))]
         return _repr(self, args=args, nameblacklist=["name"])

@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 class DictExporter:
     """
     Tree to dictionary exporter.
@@ -47,17 +48,20 @@ class DictExporter:
                    'children': [{'a': 'sub0A', 'b': 'foo'}, {'a': 'sub0B'}]}]}
     """
 
+    @instrument
     def __init__(self, dictcls=dict, attriter=None, childiter=list, maxlevel=None):
         self.dictcls = dictcls
         self.attriter = attriter
         self.childiter = childiter
         self.maxlevel = maxlevel
 
+    @instrument
     def export(self, node):
         """Export tree starting at `node`."""
         attriter = self.attriter or (lambda attr_values: attr_values)
         return self.__export(node, self.dictcls, attriter, self.childiter)
 
+    @instrument
     def __export(self, node, dictcls, attriter, childiter, level=1):
         attr_values = attriter(self._iter_attr_values(node))
         data = dictcls(attr_values)
@@ -72,6 +76,7 @@ class DictExporter:
         return data
 
     @staticmethod
+    @instrument
     def _iter_attr_values(node):
         # pylint: disable=C0103
         for k, v in node.__dict__.items():

@@ -1,9 +1,11 @@
+from otkt.instrument import instrument
 import pytest
 
 # https://stackoverflow.com/questions/46962007/how-to-automatically-change-to-pytest-temporary-directory-for-all-doctests
 
 
 @pytest.fixture(autouse=True)
+@instrument
 def _docdir(request):
     # Trigger ONLY for the doctests.
     doctest_plugin = request.config.pluginmanager.getplugin("doctest")

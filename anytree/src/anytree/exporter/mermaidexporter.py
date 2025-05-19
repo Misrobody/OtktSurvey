@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 import codecs
 import itertools
 import re
@@ -119,6 +120,7 @@ class MermaidExporter:
     N7--42-->N8
     """
 
+    @instrument
     def __init__(
         self,
         node,
@@ -147,6 +149,7 @@ class MermaidExporter:
         self.__node_ids = {}
         self.__node_counter = itertools.count()
 
+    @instrument
     def __iter__(self):
         # prepare
         indent = " " * self.indent
@@ -158,6 +161,7 @@ class MermaidExporter:
         return self.__iter(indent, nodenamefunc, nodefunc, edgefunc, filter_, stop)
 
     # pylint: disable=arguments-differ
+    @instrument
     def _default_nodenamefunc(self, node):
         node_id = id(node)
         try:
@@ -167,32 +171,38 @@ class MermaidExporter:
         return f"N{num}"
 
     @staticmethod
+    @instrument
     def _default_nodefunc(node):
         # pylint: disable=W0613
         return f'["{MermaidExporter.esc(node.name)}"]'
 
     @staticmethod
+    @instrument
     def _default_edgefunc(node, child):
         # pylint: disable=W0613
         return "-->"
 
+    @instrument
     def __iter(self, indent, nodenamefunc, nodefunc, edgefunc, filter_, stop):
         yield f"{self.graph} {self.name}"
         yield from self.__iter_options(indent)
         yield from self.__iter_nodes(indent, nodenamefunc, nodefunc, filter_, stop)
         yield from self.__iter_edges(indent, nodenamefunc, edgefunc, filter_, stop)
 
+    @instrument
     def __iter_options(self, indent):
         options = self.options
         if options:
             for option in options:
                 yield f"{indent}{option}"
 
+    @instrument
     def __iter_nodes(self, indent, nodenamefunc, nodefunc, filter_, stop):
         for node in PreOrderIter(self.node, filter_=filter_, stop=stop, maxlevel=self.maxlevel):
             nodename = nodenamefunc(node)
             yield f"{indent}{nodename}{nodefunc(node)}"
 
+    @instrument
     def __iter_edges(self, indent, nodenamefunc, edgefunc, filter_, stop):
         maxlevel = self.maxlevel - 1 if self.maxlevel else None
         for node in PreOrderIter(self.node, filter_=filter_, stop=stop, maxlevel=maxlevel):
@@ -203,6 +213,7 @@ class MermaidExporter:
                     edge = edgefunc(node, child)
                     yield f"{indent}{nodename}{edge}{childname}"
 
+    @instrument
     def to_file(self, filename):
         """
         Write graph to `filename`.
@@ -228,6 +239,7 @@ class MermaidExporter:
             file.write("```")
 
     @staticmethod
+    @instrument
     def esc(value):
         """Escape Strings."""
         return _RE_ESC.sub(lambda m: rf"\{m.group(0)}", str(value))

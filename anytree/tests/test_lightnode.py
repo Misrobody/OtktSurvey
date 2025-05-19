@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from anytree import LightNodeMixin, LoopError, PostOrderIter, PreOrderIter, TreeError
 
 from .helper import assert_raises
@@ -6,17 +7,20 @@ from .helper import assert_raises
 class LightNode(LightNodeMixin):
     __slots__ = ["name"]
 
+    @instrument
     def __init__(self, name, parent=None, children=None):
         self.name = name
         self.parent = parent
         if children:
             self.children = children
 
+    @instrument
     def __repr__(self):
         path = self.separator.join([""] + [str(node.name) for node in self.path])
         return f"{self.__class__.__name__}({path!r})"
 
 
+@instrument
 def test_parent_child():
     """A tree parent and child attributes."""
     root = LightNode("root")
@@ -115,6 +119,7 @@ def test_parent_child():
     assert s1ca.children == ()
 
 
+@instrument
 def test_detach_children():
     root = LightNode("root")
     s0 = LightNode("sub0", parent=root)
@@ -133,6 +138,7 @@ def test_detach_children():
     assert root.descendants == (s0, s1)
 
 
+@instrument
 def test_children_setter():
     root = LightNode("root")
     s0 = LightNode("sub0")
@@ -163,6 +169,7 @@ def test_children_setter():
     assert root.descendants == (s0, s0a, s1)
 
 
+@instrument
 def test_children_setter_large():
     root = LightNode("root")
     s0 = LightNode("sub0")
@@ -185,6 +192,7 @@ def test_children_setter_large():
     assert root.descendants == (s0, s0a, s0b, s1, s1a, s1b, s1c)
 
 
+@instrument
 def test_node_children_multiple():
     root = LightNode("root")
     sub = LightNode("sub")
@@ -192,6 +200,7 @@ def test_node_children_multiple():
         root.children = [sub, sub]
 
 
+@instrument
 def test_recursion_detection():
     """Recursion detection."""
     root = LightNode("root")
@@ -228,6 +237,7 @@ def test_recursion_detection():
         raise AssertionError
 
 
+@instrument
 def test_ancestors():
     """Node.ancestors."""
     root = LightNode("root")
@@ -245,12 +255,14 @@ def test_ancestors():
     assert s1ca.ancestors == (root, s1, s1c)
 
 
+@instrument
 def test_node_children_init():
     """Node With Children Attribute."""
     root = LightNode("root", children=[LightNode("a", children=[LightNode("aa")]), LightNode("b")])
     assert repr(root.descendants) == "(LightNode('/root/a'), LightNode('/root/a/aa'), LightNode('/root/b'))"
 
 
+@instrument
 def test_descendants():
     """Node.descendants."""
     root = LightNode("root")
@@ -267,6 +279,7 @@ def test_descendants():
     assert s1ca.descendants == ()
 
 
+@instrument
 def test_root():
     """Node.root."""
     root = LightNode("root")
@@ -286,6 +299,7 @@ def test_root():
     assert s1ca.root == root
 
 
+@instrument
 def test_siblings():
     """Node.siblings."""
     root = LightNode("root")
@@ -305,6 +319,7 @@ def test_siblings():
     assert s1ca.siblings == ()
 
 
+@instrument
 def test_is_leaf():
     """Node.is_leaf."""
     root = LightNode("root")
@@ -324,6 +339,7 @@ def test_is_leaf():
     assert s1ca.is_leaf is True
 
 
+@instrument
 def test_leaves():
     """Node.leaves."""
     root = LightNode("root")
@@ -343,6 +359,7 @@ def test_leaves():
     assert s1ca.leaves == (s1ca,)
 
 
+@instrument
 def test_is_root():
     """Node.is_root."""
     root = LightNode("root")
@@ -362,6 +379,7 @@ def test_is_root():
     assert s1ca.is_root is False
 
 
+@instrument
 def test_height():
     """Node.height."""
     root = LightNode("root")
@@ -381,6 +399,7 @@ def test_height():
     assert s1ca.height == 0
 
 
+@instrument
 def test_size():
     """Node.size."""
     root = LightNode("root")
@@ -400,6 +419,7 @@ def test_size():
     assert s1ca.size == 1
 
 
+@instrument
 def test_depth():
     """Node.depth."""
     root = LightNode("root")
@@ -419,12 +439,14 @@ def test_depth():
     assert s1ca.depth == 3
 
 
+@instrument
 def test_parent():
     """Parent attribute."""
     foo = LightNodeMixin()
     assert foo.parent is None
 
 
+@instrument
 def test_pre_order_iter():
     """Pre-Order Iterator."""
     f = LightNode("f")
@@ -440,6 +462,7 @@ def test_pre_order_iter():
     assert [node.name for node in PreOrderIter(f)] == ["f", "b", "a", "d", "c", "e", "g", "i", "h"]
 
 
+@instrument
 def test_post_order_iter():
     """Post-Order Iterator."""
     f = LightNode("f")
@@ -455,25 +478,30 @@ def test_post_order_iter():
     assert [node.name for node in PostOrderIter(f)] == ["a", "c", "e", "d", "b", "h", "i", "g", "f"]
 
 
+@instrument
 def test_hookups():
     """Hookup attributes #29."""
 
     class MyLightNode(LightNode):
+        @instrument
         def _pre_attach(self, parent):
             assert str(self.parent) == "None"
             assert self.children == ()
             assert str(self.path) == "(MyLightNode('/B'),)"
 
+        @instrument
         def _post_attach(self, parent):
             assert str(self.parent) == "MyLightNode('/A')"
             assert self.children == ()
             assert str(self.path) == "(MyLightNode('/A'), MyLightNode('/A/B'))"
 
+        @instrument
         def _pre_detach(self, parent):
             assert str(self.parent) == "MyLightNode('/A')"
             assert self.children == ()
             assert str(self.path) == "(MyLightNode('/A'), MyLightNode('/A/B'))"
 
+        @instrument
         def _post_detach(self, parent):
             assert str(self.parent) == "None"
             assert self.children == ()

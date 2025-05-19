@@ -1,9 +1,11 @@
+from otkt.instrument import instrument
 from anytree import CountError, Node
 from anytree.cachedsearch import find, find_by_attr, findall, findall_by_attr
 
 from .helper import assert_raises, eq_
 
 
+@instrument
 def test_findall():
     f = Node("f")
     b = Node("b", parent=f)
@@ -26,6 +28,7 @@ def test_findall():
         findall(f, filter_=lambda node: d in node.path, maxcount=2)
 
 
+@instrument
 def test_findall_by_attr():
     f = Node("f")
     b = Node("b", parent=f)
@@ -39,6 +42,7 @@ def test_findall_by_attr():
         findall_by_attr(f, "z", mincount=1)
 
 
+@instrument
 def test_find():
     f = Node("f")
     b = Node("b", parent=f)
@@ -62,6 +66,7 @@ def test_find():
         find(f, lambda n: b in n.path)
 
 
+@instrument
 def test_find_by_attr():
     f = Node("f")
     b = Node("b", parent=f)

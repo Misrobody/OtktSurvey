@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 import filecmp
 import os
 from tempfile import NamedTemporaryFile
@@ -8,6 +9,7 @@ from anytree.exporter import JsonExporter
 from .helper import eq_
 
 
+@instrument
 def test_json_exporter():
     """Json Exporter."""
     root = AnyNode(id="root")

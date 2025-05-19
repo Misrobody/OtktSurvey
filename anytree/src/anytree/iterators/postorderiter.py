@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from .abstractiter import AbstractIter
 
 
@@ -36,10 +37,12 @@ class PostOrderIter(AbstractIter):
     """
 
     @staticmethod
+    @instrument
     def _iter(children, filter_, stop, maxlevel):
         return PostOrderIter.__next(children, 1, filter_, stop, maxlevel)
 
     @staticmethod
+    @instrument
     def __next(children, level, filter_, stop, maxlevel):
         if not AbstractIter._abort_at_level(level, maxlevel):
             for child in children:

@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 import codecs
 import itertools
 import logging
@@ -157,6 +158,7 @@ class DotExporter:
     }
     """
 
+    @instrument
     def __init__(
         self,
         node,
@@ -185,6 +187,7 @@ class DotExporter:
         self.maxlevel = maxlevel
         self.stop = stop
 
+    @instrument
     def __iter__(self):
         # prepare
         indent = " " * self.indent
@@ -196,29 +199,35 @@ class DotExporter:
         return self.__iter(indent, nodenamefunc, nodeattrfunc, edgeattrfunc, edgetypefunc, filter_)
 
     @staticmethod
+    @instrument
     def _default_nodenamefunc(node):
         return node.name
 
     @staticmethod
+    @instrument
     def _default_nodeattrfunc(node):
         # pylint: disable=unused-argument
         return None
 
     @staticmethod
+    @instrument
     def _default_edgeattrfunc(node, child):
         # pylint: disable=unused-argument
         return None
 
     @staticmethod
+    @instrument
     def _default_edgetypefunc(node, child):
         # pylint: disable=unused-argument
         return "->"
 
     @staticmethod
+    @instrument
     def _default_filter(node):
         # pylint: disable=unused-argument
         return True
 
+    @instrument
     def __iter(self, indent, nodenamefunc, nodeattrfunc, edgeattrfunc, edgetypefunc, filter_):
         yield f"{self.graph} {self.name} {{"
         yield from self.__iter_options(indent)
@@ -226,12 +235,14 @@ class DotExporter:
         yield from self.__iter_edges(indent, nodenamefunc, edgeattrfunc, edgetypefunc, filter_)
         yield "}"
 
+    @instrument
     def __iter_options(self, indent):
         options = self.options
         if options:
             for option in options:
                 yield f"{indent}{option}"
 
+    @instrument
     def __iter_nodes(self, indent, nodenamefunc, nodeattrfunc, filter_):
         for node in PreOrderIter(self.node, filter_=filter_, stop=self.stop, maxlevel=self.maxlevel):
             nodename = nodenamefunc(node)
@@ -239,6 +250,7 @@ class DotExporter:
             nodeattr = f" [{nodeattr}]" if nodeattr is not None else ""
             yield f'{indent}"{DotExporter.esc(nodename)}"{nodeattr};'
 
+    @instrument
     def __iter_edges(self, indent, nodenamefunc, edgeattrfunc, edgetypefunc, filter_):
         maxlevel = self.maxlevel - 1 if self.maxlevel else None
         for node in PreOrderIter(self.node, filter_=filter_, stop=self.stop, maxlevel=maxlevel):
@@ -252,6 +264,7 @@ class DotExporter:
                 edgeattr = f" [{edgeattr}]" if edgeattr is not None else ""
                 yield f'{indent}"{DotExporter.esc(nodename)}" {edgetype} "{DotExporter.esc(childname)}"{edgeattr};'
 
+    @instrument
     def to_dotfile(self, filename):
         """
         Write graph to `filename`.
@@ -279,6 +292,7 @@ class DotExporter:
             for line in self:
                 file.write(f"{line}\n")
 
+    @instrument
     def to_picture(self, filename):
         """
         Write graph to a temporary file and invoke `dot`.
@@ -302,6 +316,7 @@ class DotExporter:
             logging.getLogger(__name__).warning("Could not remove temporary file %s", dotfilename)
 
     @staticmethod
+    @instrument
     def esc(value):
         """Escape Strings."""
         return _RE_ESC.sub(lambda m: rf"\{m.group(0)}", str(value))
@@ -412,6 +427,7 @@ class UniqueDotExporter(DotExporter):
     }
     """
 
+    @instrument
     def __init__(
         self,
         node,
@@ -445,6 +461,7 @@ class UniqueDotExporter(DotExporter):
         self.__node_counter = itertools.count()
 
     # pylint: disable=arguments-differ
+    @instrument
     def _default_nodenamefunc(self, node):
         node_id = id(node)
         try:
@@ -454,5 +471,6 @@ class UniqueDotExporter(DotExporter):
         return hex(num)
 
     @staticmethod
+    @instrument
     def _default_nodeattrfunc(node):
         return f'label="{node.name}"'

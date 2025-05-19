@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 """Test custom node separator."""
 
 import anytree as at
@@ -9,6 +10,7 @@ class MyNode(at.Node):
     separator = "|"
 
 
+@instrument
 def test_render():
     """Render string cast."""
     root = MyNode("root")
@@ -27,6 +29,7 @@ def test_render():
     ]
 
 
+@instrument
 def test_get():
     """Get."""
     top = MyNode("top", parent=None)
@@ -50,6 +53,7 @@ def test_get():
         r.get(sub0sub0, "|bar")
 
 
+@instrument
 def test_glob():
     """Wildcard."""
     top = MyNode("top", parent=None)

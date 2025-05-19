@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 """Central Configuration."""
 
 import os

@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 class TreeError(RuntimeError):
     """Tree Error."""
 

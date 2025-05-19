@@ -1,8 +1,10 @@
+from otkt.instrument import instrument
 import pickle
 
 from anytree import Node, RenderTree, SymlinkNode
 
 
+@instrument
 def test_pickle(tmp_path):
     """Pickling Compatibility."""
     root = Node(name="root")

@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from .nodemixin import NodeMixin
 from .util import _repr
 
@@ -90,11 +91,13 @@ class AnyNode(NodeMixin):
     ... ])
     """
 
+    @instrument
     def __init__(self, parent=None, children=None, **kwargs):
         self.__dict__.update(kwargs)
         self.parent = parent
         if children:
             self.children = children
 
+    @instrument
     def __repr__(self):
         return _repr(self)

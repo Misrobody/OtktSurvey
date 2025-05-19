@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 """Powerful and Lightweight Python Tree Data Structure."""
 
 __version__ = "2.12.1"

@@ -1,8 +1,10 @@
+from otkt.instrument import instrument
 from anytree import Node
 
 from .helper import assert_raises, eq_
 
 
+@instrument
 def test_readonly_pre():
     """Read Only Use case, where Exceptions in _pre_{attach,detach} avoid modifications."""
 
@@ -12,10 +14,12 @@ def test_readonly_pre():
     class ReadonlyNode(Node):
         _is_readonly = False
 
+        @instrument
         def _pre_attach(self, parent):
             if self._is_readonly:
                 raise ReadonlyError
 
+        @instrument
         def _pre_detach(self, parent):
             if self._is_readonly:
                 raise ReadonlyError
@@ -32,6 +36,7 @@ def test_readonly_pre():
     s1ca = ReadonlyNode("sub1Ca", parent=s1c)
     ReadonlyNode._is_readonly = True
 
+    @instrument
     def check():
         eq_(root.parent, None)
         eq_(root.children, (s0, s1))

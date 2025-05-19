@@ -1,14 +1,17 @@
+from otkt.instrument import instrument
 from anytree import AnyNode, LoopError, Node, NodeMixin, PostOrderIter, PreOrderIter, TreeError
 
 from .helper import assert_raises
 
 
+@instrument
 def test_node_parent_error():
     """Node Parent Error."""
     with assert_raises(TreeError, "Parent node 'parent' is not of type 'NodeMixin'."):
         Node("root", "parent")
 
 
+@instrument
 def test_parent_child():
     """A tree parent and child attributes."""
     root = Node("root")
@@ -107,6 +110,7 @@ def test_parent_child():
     assert s1ca.children == ()
 
 
+@instrument
 def test_detach_children():
     root = Node("root")
     s0 = Node("sub0", parent=root)
@@ -125,6 +129,7 @@ def test_detach_children():
     assert root.descendants == (s0, s1)
 
 
+@instrument
 def test_children_setter():
     root = Node("root")
     s0 = Node("sub0")
@@ -153,6 +158,7 @@ def test_children_setter():
     assert root.descendants == (s0, s0a, s1)
 
 
+@instrument
 def test_children_setter_large():
     root = Node("root")
     s0 = Node("sub0")
@@ -175,12 +181,14 @@ def test_children_setter_large():
     assert root.descendants == (s0, s0a, s0b, s1, s1a, s1b, s1c)
 
 
+@instrument
 def test_node_children_type():
     root = Node("root")
     with assert_raises(TreeError, "Cannot add non-node object 'string'. It is not a subclass of 'NodeMixin'."):
         root.children = ["string"]
 
 
+@instrument
 def test_node_children_multiple():
     root = Node("root")
     sub = Node("sub")
@@ -188,6 +196,7 @@ def test_node_children_multiple():
         root.children = [sub, sub]
 
 
+@instrument
 def test_recursion_detection():
     """Recursion detection."""
     root = Node("root")
@@ -224,6 +233,7 @@ def test_recursion_detection():
         raise AssertionError
 
 
+@instrument
 def test_repr():
     """Node representation."""
     root = Node("root")
@@ -235,6 +245,7 @@ def test_repr():
     assert repr(s1) == "Node('/root/sub1', bar='c0fe', foo=42)"
 
 
+@instrument
 def test_ancestors():
     """Node.ancestors."""
     root = Node("root")
@@ -254,18 +265,21 @@ def test_ancestors():
     assert s1ca.ancestors == (root, s1, s1c)
 
 
+@instrument
 def test_node_children_init():
     """Node With Children Attribute."""
     root = Node("root", children=[Node("a", children=[Node("aa")]), Node("b")])
     assert repr(root.descendants) == "(Node('/root/a'), Node('/root/a/aa'), Node('/root/b'))"
 
 
+@instrument
 def test_anynode_children_init():
     """Anynode With Children Attribute."""
     root = AnyNode(foo="root", children=[AnyNode(foo="a", children=[AnyNode(foo="aa")]), AnyNode(foo="b")])
     assert repr(root.descendants) == "(AnyNode(foo='a'), AnyNode(foo='aa'), AnyNode(foo='b'))"
 
 
+@instrument
 def test_descendants():
     """Node.descendants."""
     root = Node("root")
@@ -282,6 +296,7 @@ def test_descendants():
     assert s1ca.descendants == ()
 
 
+@instrument
 def test_root():
     """Node.root."""
     root = Node("root")
@@ -301,6 +316,7 @@ def test_root():
     assert s1ca.root == root
 
 
+@instrument
 def test_siblings():
     """Node.siblings."""
     root = Node("root")
@@ -320,6 +336,7 @@ def test_siblings():
     assert s1ca.siblings == ()
 
 
+@instrument
 def test_is_leaf():
     """Node.is_leaf."""
     root = Node("root")
@@ -339,6 +356,7 @@ def test_is_leaf():
     assert s1ca.is_leaf is True
 
 
+@instrument
 def test_leaves():
     """Node.leaves."""
     root = Node("root")
@@ -358,6 +376,7 @@ def test_leaves():
     assert s1ca.leaves == (s1ca,)
 
 
+@instrument
 def test_is_root():
     """Node.is_root."""
     root = Node("root")
@@ -377,6 +396,7 @@ def test_is_root():
     assert s1ca.is_root is False
 
 
+@instrument
 def test_height():
     """Node.height."""
     root = Node("root")
@@ -396,6 +416,7 @@ def test_height():
     assert s1ca.height == 0
 
 
+@instrument
 def test_size():
     """Node.size."""
     root = Node("root")
@@ -415,6 +436,7 @@ def test_size():
     assert s1ca.size == 1
 
 
+@instrument
 def test_depth():
     """Node.depth."""
     root = Node("root")
@@ -434,12 +456,14 @@ def test_depth():
     assert s1ca.depth == 3
 
 
+@instrument
 def test_parent():
     """Parent attribute."""
     foo = NodeMixin()
     assert foo.parent is None
 
 
+@instrument
 def test_pre_order_iter():
     """Pre-Order Iterator."""
     f = Node("f")
@@ -455,6 +479,7 @@ def test_pre_order_iter():
     assert [node.name for node in PreOrderIter(f)] == ["f", "b", "a", "d", "c", "e", "g", "i", "h"]
 
 
+@instrument
 def test_post_order_iter():
     """Post-Order Iterator."""
     f = Node("f")
@@ -470,6 +495,7 @@ def test_post_order_iter():
     assert [node.name for node in PostOrderIter(f)] == ["a", "c", "e", "d", "b", "h", "i", "g", "f"]
 
 
+@instrument
 def test_anyname():
     """Support any type as name."""
     myroot = Node([1, 2, 3])
@@ -477,13 +503,16 @@ def test_anyname():
     assert str(myroot) == "Node('/[1, 2, 3]')"
 
 
+@instrument
 def test_node_kwargs():
     """Ticket #24."""
 
     class MyNode(Node):
+        @instrument
         def __init__(self, name, parent=None, **kwargs):
             super().__init__(name, parent, **kwargs)
 
+        @instrument
         def _post_attach(self, parent):
             print(self.my_attribute)
 
@@ -492,25 +521,30 @@ def test_node_kwargs():
     assert repr(node_b) == "MyNode('/A/B', my_attribute=True)"
 
 
+@instrument
 def test_hookups():
     """Hookup attributes #29."""
 
     class MyNode(Node):
+        @instrument
         def _pre_attach(self, parent):
             assert str(self.parent) == "None"
             assert self.children == ()
             assert str(self.path) == "(MyNode('/B'),)"
 
+        @instrument
         def _post_attach(self, parent):
             assert str(self.parent) == "MyNode('/A')"
             assert self.children == ()
             assert str(self.path) == "(MyNode('/A'), MyNode('/A/B'))"
 
+        @instrument
         def _pre_detach(self, parent):
             assert str(self.parent) == "MyNode('/A')"
             assert self.children == ()
             assert str(self.path) == "(MyNode('/A'), MyNode('/A/B'))"
 
+        @instrument
         def _post_detach(self, parent):
             assert str(self.parent) == "None"
             assert self.children == ()
@@ -521,12 +555,14 @@ def test_hookups():
     node_b.parent = None  # detach B from A
 
 
+@instrument
 def test_any_node_parent_error():
     """Any Node Parent Error."""
     with assert_raises(TreeError, "Parent node 'r' is not of type 'NodeMixin'."):
         AnyNode("r")
 
 
+@instrument
 def test_any_node():
     """Any Node."""
     r = AnyNode()
@@ -543,16 +579,19 @@ def test_any_node():
     assert repr(b) == "AnyNode(foo=4)"
 
 
+@instrument
 def test_eq_overwrite():
     """Node with overwritten __eq__."""
 
     class EqOverwrittingNode(NodeMixin):
+        @instrument
         def __init__(self, a, b, parent=None):
             super().__init__()
             self.a = a
             self.b = b
             self.parent = parent
 
+        @instrument
         def __eq__(self, other):
             if isinstance(other, EqOverwrittingNode):
                 return self.a == other.a and self.b == other.b
@@ -569,12 +608,14 @@ def test_eq_overwrite():
     assert b.b == 0
 
 
+@instrument
 def test_tuple():
     """Tuple as parent."""
     with assert_raises(TreeError, "Parent node (1, 0, 3) is not of type 'NodeMixin'."):
         Node((0, 1, 2), parent=(1, 0, 3))
 
 
+@instrument
 def test_tuple_as_children():
     """Tuple as children."""
     n = Node("foo")

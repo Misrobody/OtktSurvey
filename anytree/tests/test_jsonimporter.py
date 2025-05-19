@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from tempfile import NamedTemporaryFile
 
 from anytree.exporter import DictExporter
@@ -6,6 +7,7 @@ from anytree.importer import JsonImporter
 from .helper import eq_
 
 
+@instrument
 def test_json_importer():
     """Json Importer."""
     refdata = {

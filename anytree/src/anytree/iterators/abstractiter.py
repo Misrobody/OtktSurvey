@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 class AbstractIter:
     # pylint: disable=R0205
     """
@@ -11,6 +12,7 @@ class AbstractIter:
         maxlevel (int): maximum descending in the node hierarchy.
     """
 
+    @instrument
     def __init__(self, node, filter_=None, stop=None, maxlevel=None):
         self.node = node
         self.filter_ = filter_
@@ -18,6 +20,7 @@ class AbstractIter:
         self.maxlevel = maxlevel
         self.__iter = None
 
+    @instrument
     def __init(self):
         node = self.node
         maxlevel = self.maxlevel
@@ -27,31 +30,38 @@ class AbstractIter:
         return self._iter(children, filter_, stop, maxlevel)
 
     @staticmethod
+    @instrument
     def __default_filter(node):
         # pylint: disable=W0613
         return True
 
     @staticmethod
+    @instrument
     def __default_stop(node):
         # pylint: disable=W0613
         return False
 
+    @instrument
     def __iter__(self):
         return self
 
+    @instrument
     def __next__(self):
         if self.__iter is None:
             self.__iter = self.__init()
         return next(self.__iter)
 
     @staticmethod
+    @instrument
     def _iter(children, filter_, stop, maxlevel):
         raise NotImplementedError
 
     @staticmethod
+    @instrument
     def _abort_at_level(level, maxlevel):
         return maxlevel is not None and level > maxlevel
 
     @staticmethod
+    @instrument
     def _get_children(children, stop):
         return [child for child in children if not stop(child)]

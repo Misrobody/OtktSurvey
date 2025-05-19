@@ -1,9 +1,11 @@
+from otkt.instrument import instrument
 import warnings
 
 from anytree.exporter.dotexporter import DotExporter
 
 
 class RenderTreeGraph(DotExporter):
+    @instrument
     def __init__(self, *args, **kwargs):
         """Legacy. Use :any:`anytree.exporter.DotExporter` instead."""
         warnings.warn(

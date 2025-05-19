@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 from .abstractiter import AbstractIter
 
 
@@ -42,6 +43,7 @@ class LevelOrderGroupIter(AbstractIter):
     """
 
     @staticmethod
+    @instrument
     def _iter(children, filter_, stop, maxlevel):
         level = 1
         while children:
@@ -52,6 +54,7 @@ class LevelOrderGroupIter(AbstractIter):
             children = LevelOrderGroupIter._get_grandchildren(children, stop)
 
     @staticmethod
+    @instrument
     def _get_grandchildren(children, stop):
         next_children = []
         for child in children:

@@ -1,8 +1,10 @@
+from otkt.instrument import instrument
 from anytree import Node, Walker, WalkError
 
 from .helper import assert_raises, eq_
 
 
+@instrument
 def test_walker():
     """Walk test."""
     f = Node("f")

@@ -1,3 +1,4 @@
+from otkt.instrument import instrument
 import json
 
 from .dictimporter import DictImporter
@@ -48,18 +49,22 @@ class JsonImporter:
     └── AnyNode(a='sub1')
     """
 
+    @instrument
     def __init__(self, dictimporter=None, **kwargs):
         self.dictimporter = dictimporter
         self.kwargs = kwargs
 
+    @instrument
     def __import(self, data):
         dictimporter = self.dictimporter or DictImporter()
         return dictimporter.import_(data)
 
+    @instrument
     def import_(self, data):
         """Read JSON from `data`."""
         return self.__import(json.loads(data, **self.kwargs))
 
+    @instrument
     def read(self, filehandle):
         """Read JSON from `filehandle`."""
         return self.__import(json.load(filehandle, **self.kwargs))

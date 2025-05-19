@@ -1,9 +1,11 @@
+from otkt.instrument import instrument
 from anytree import Node
 from anytree.util import commonancestors, leftsibling, rightsibling
 
 from .helper import eq_
 
 
+@instrument
 def test_commonancestors():
     """Commonancestors."""
     udo = Node("Udo")
@@ -20,6 +22,7 @@ def test_commonancestors():
     eq_(commonancestors(jet, lian), (udo,))
 
 
+@instrument
 def test_leftsibling():
     """Leftsibling."""
     dan = Node("Dan")
@@ -32,6 +35,7 @@ def test_leftsibling():
     eq_(leftsibling(joe), jan)
 
 
+@instrument
 def test_rightsibling():
     """Rightsibling."""
     dan = Node("Dan")
