@@ -2,7 +2,7 @@
 
 ## 1. Generate the instrumenting probe and collector
 ```
-java -jar otkt-jar-with-dependencies.jar examples/demo.otkt  otkt-bin/
+java -jar tools/otkt-jar-with-dependencies.jar examples/demo.otkt  otkt-bin/
 ```
 
 ## 2. Instrument anytree
