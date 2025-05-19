@@ -23,7 +23,7 @@ sed -i '1 i\from otkt.otelinit import tracer' examples/anytree-test.py
 
 ### 3.1 Build
 ```
-cd otkt-gen/collector
+cd otkt-bin/collector
 mvn clean package
 cd ../..
 ```
