@@ -46,7 +46,7 @@ In `/tmp` there should be kieker logs. If not, go back to 4.
 ```bash
 # run analysis
 ./tools/trace-analysis-2.0.2/bin/trace-analysis \
---inputdirs ./bin/kieker*                       \
+--inputdirs /tmp/kieker*                        \
 --outputdir ./bin/adctree                       \
 --plot-Aggregated-Deployment-Call-Tree
 
@@ -60,7 +60,7 @@ cd ..
 ```bash
 # run analysis 
 ./tools/trace-analysis-2.0.2/bin/trace-analysis \
---inputdirs ./bin/kieker*                       \
+--inputdirs /tmp/kieker*                        \
 --outputdir ./bin/dcdgraph                      \
 --plot-Deployment-Component-Dependency-Graph none
 
@@ -74,7 +74,7 @@ cd ..
 ```bash
 # run analysis
 ./tools/trace-analysis-2.0.2/bin/trace-analysis \
---inputdirs ./bin/kieker*                       \
+--inputdirs /tmp/kieker*                        \
 --outputdir ./bin/dsdiagrams                    \
 --plot-Deployment-Sequence-Diagrams
 
