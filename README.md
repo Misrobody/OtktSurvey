@@ -83,3 +83,11 @@ cd bin/dsdiagrams
 ../../tools/process.sh
 cd ../..
 ```
+
+## 6. Open the graphs
+Open any .pdf of your choice with the following:
+```
+gio open output.pdf
+```
+
+
