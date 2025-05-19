@@ -1,6 +1,6 @@
 # OtktSurvey
 
-## 1. Generate the instrumenting probe and collector
+## 1. Generate the probe and collector
 ```
 java -jar tools/otkt-jar-with-dependencies.jar examples/demo.otkt  otkt-bin/
 ```
