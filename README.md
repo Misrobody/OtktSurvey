@@ -45,9 +45,9 @@ In `/tmp` there should be kieker logs. If not, go back to 4.
 ### 5.1 Aggregated Deployment Call Tree
 ```bash
 # run analysis
-./trace-analysis-2.0.2/bin/trace-analysis \
---inputdirs ./bin/kieker*                 \
---outputdir ./bin/adctree                 \
+./tools/trace-analysis-2.0.2/bin/trace-analysis \
+--inputdirs ./bin/kieker*                       \
+--outputdir ./bin/adctree                       \
 --plot-Aggregated-Deployment-Call-Tree
 
 # plot graph
@@ -59,9 +59,9 @@ cd ..
 ### 5.2 Deployment Component Dependency Graph
 ```bash
 # run analysis 
-./trace-analysis-2.0.2/bin/trace-analysis \
---inputdirs ./bin/kieker*                 \
---outputdir ./bin/dcdgraph                \
+./tools/trace-analysis-2.0.2/bin/trace-analysis \
+--inputdirs ./bin/kieker*                       \
+--outputdir ./bin/dcdgraph                      \
 --plot-Deployment-Component-Dependency-Graph none
 
 # plot graph
@@ -73,9 +73,9 @@ cd ..
 ### 5.3 Deployment Sequence Diagrams
 ```bash
 # run analysis
-./trace-analysis-2.0.2/bin/trace-analysis \
---inputdirs ./bin/kieker*                 \
---outputdir ./bin/dsdiagrams              \
+./tools/trace-analysis-2.0.2/bin/trace-analysis \
+--inputdirs ./bin/kieker*                       \
+--outputdir ./bin/dsdiagrams                    \
 --plot-Deployment-Sequence-Diagrams
 
 # plot graphs
@@ -83,6 +83,3 @@ cd ./bin/dsdiagrams
 ../tools/process.sh
 cd ..
 ```
-
-
-
