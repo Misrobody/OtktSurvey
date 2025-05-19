@@ -19,7 +19,15 @@ cd ..
 sed -i '1 i\from otkt.otelinit import tracer' examples/anytree-test.py
 ```
 
-## 3. Run the collector
+## 3. Set up the collector
+
+### 3.1 Build
+```
+cd otkt-gen/collertor
+mvn clean package
+```
+
+### 3.2 Run
 In a separate terminal
 ```
 java -jar ./otkt-bin/collector/target/Collector-0.0.1-SNAPSHOT-jar-with-dependencies.jar -c ./res/config.txt
