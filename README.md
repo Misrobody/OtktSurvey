@@ -2,7 +2,7 @@
 
 ## 1. Generate the instrumenting probe and collector
 ```
-java -jar tools/Otkt-1.0.jar examples/demo.otkt  otkt-bin/
+java -jar otkt-jar-with-dependencies.jar examples/demo.otkt  otkt-bin/
 ```
 
 ## 2. Instrument anytree
@@ -25,6 +25,7 @@ sed -i '1 i\from otkt.otelinit import tracer' examples/anytree-test.py
 ```
 cd otkt-gen/collector
 mvn clean package
+cd ../..
 ```
 
 ### 3.2 Run
