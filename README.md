@@ -84,7 +84,8 @@ ll /tmp/kieker*
 ./tools/trace-analysis-2.0.2/bin/trace-analysis \
 --inputdirs /tmp/kieker*                        \
 --outputdir ./bin/adctree                       \
---plot-Aggregated-Deployment-Call-Tree
+--plot-Aggregated-Deployment-Call-Tree          \
+--short-labels
 
 # plot graph
 cd ./bin/adctree
