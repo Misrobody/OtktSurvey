@@ -72,6 +72,9 @@ Back to the original terminal.
 python3 examples/anytree-test.py
 ```
 In `/tmp` there should be kieker logs. If so, you can stop the collector.
+```
+ll /tmp/kieker*
+```
 
 ## 6. Run the analysis
 
