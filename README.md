@@ -13,14 +13,17 @@ The generated code is comprised made of:
 - The probe (python module)
 The following will build the collector and install the probe.
 ```
-cd otkt-gen && make
+cd otkt-gen
+make
+cd ..
 ```
+Note: you can clean the project with `make clean` if necessary. 
 
 ## 2. Instrument anytree
 
 ### 2.1 Instrument the target python files
 ```
-cd anytree && ../tools/instrument-py.sh
+tools/instrument.sh anytree
 ```
 
 ### 2.2 Instrument the entrypoint
