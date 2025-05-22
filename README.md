@@ -112,7 +112,8 @@ cd ../..
 ./tools/trace-analysis-2.0.2/bin/trace-analysis \
 --inputdirs /tmp/kieker*                        \
 --outputdir ./bin/dsdiagrams                    \
---plot-Deployment-Sequence-Diagrams
+--plot-Deployment-Sequence-Diagrams             \
+--short-labels
 
 # plot graphs
 cd bin/dsdiagrams
