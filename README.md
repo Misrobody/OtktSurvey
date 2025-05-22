@@ -1,14 +1,11 @@
 # OtktSurvey
 
-This repository has submodules.
-Either clone it with:
+This repository has submodules. Clone it with:
 ```
 git clone --recurse-submodules <url>
 ```
-Or run:
-```
-git submodule update --remote --recursive
-```
+
+![Otkt logo](docs/img/otkt_logo.svg)
 
 ## 1. Build Otkt
 The following will build the Otkt code generator.
