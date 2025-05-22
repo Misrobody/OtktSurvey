@@ -5,7 +5,7 @@ This repository has submodules. Clone it with:
 git clone --recurse-submodules <url>
 ```
 
-![Otkt logo](docs/img/otkt_logo.svg)
+![Otkt logo](res/otkt_logo.svg)
 
 ## 1. Build Otkt
 The following will build the Otkt code generator.
