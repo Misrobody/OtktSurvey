@@ -1,37 +1,37 @@
 # OtktSurvey
 
-## 1. Generate the probe and collector
+## 1. Setup the probe and collector
+### Generate
+Otkt will generate the necessary code from an otkt quote.
 ```
-java -jar tools/otkt-jar-with-dependencies.jar examples/demo.otkt  otkt-bin/
+java -jar tools/otkt-jar-with-dependencies.jar examples/demo.otkt
+```
+
+### Build
+The generated code is comprised made of:
+- The collector (java project)
+- The probe (python module)
+The following will build the collector and install the probe.
+```
+cd otkt-gen && make
 ```
 
 ## 2. Instrument anytree
 
 ### 2.1 Instrument the target python files
 ```
-cd anytree
-./../tools/instrument-py.sh
-cd ..
+cd anytree && ../tools/instrument-py.sh
 ```
 
 ### 2.2 Instrument the entrypoint
 ```
-sed -i '1 i\from otkt.otelinit import tracer' examples/anytree-test.py
+echo "from otkt.kieker.otelinit import tracer" > examples/anytree-test.py
 ```
 
-## 3. Set up the collector
-
-### 3.1 Build
-```
-cd otkt-bin/collector
-mvn clean package
-cd ../..
-```
-
-### 3.2 Run
+## 3. Run the collector
 In a separate terminal
 ```
-java -jar ./otkt-bin/collector/target/Collector-0.0.1-SNAPSHOT-jar-with-dependencies.jar -c ./res/config.txt
+java -jar otkt-gen/collector/target/Collector-0.0.1-SNAPSHOT-jar-with-dependencies.jar -c res/config.txt
 ```
 
 ## 4. Run the app
@@ -40,7 +40,7 @@ python3 examples/anytree-test.py
 ```
 
 ## 5. Run the analysis
-In `/tmp` there should be kieker logs. If not, go back to 4.
+In `/tmp` there should be kieker logs.
 
 ### 5.1 Aggregated Deployment Call Tree
 ```bash
