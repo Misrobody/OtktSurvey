@@ -1,3 +1,6 @@
 [submodule "anytree"]
 	path = anytree
 	url = git@github.com:c0fec0de/anytree.git
+[submodule "OtktDSL"]
+	path = OtktDSL
+	url = git@github.com:kieker-monitoring/OtktDSL.git
