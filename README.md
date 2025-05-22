@@ -57,21 +57,24 @@ tools/instrument.sh anytree
 echo "from otkt.kieker.otelinit import tracer" > examples/anytree-test.py
 ```
 
-## 4. Run the collector
-In a separate terminal
+## 4. Collect Data
+
+### 4.1 Run the collector
+In a separate terminal.
 ```
 java -jar otkt-gen/collector/target/Collector-0.0.1-SNAPSHOT-jar-with-dependencies.jar -c res/config.txt
 ```
 
-## 5. Run the app
+## 4.2 Run the app
+Back to the original terminal.
 ```
 python3 examples/anytree-test.py
 ```
-
-## 6. Run the analysis
 In `/tmp` there should be kieker logs.
 
-### 7.1 Aggregated Deployment Call Tree
+## 6. Run the analysis
+
+### 6.1 Aggregated Deployment Call Tree
 ```bash
 # run analysis
 ./tools/trace-analysis-2.0.2/bin/trace-analysis \
@@ -85,7 +88,7 @@ dot aggregatedDeploymentCallTree.dot -T pdf -o output.pdf
 cd ../..
 ```
 
-### 7.2 Deployment Component Dependency Graph
+### 6.2 Deployment Component Dependency Graph
 ```bash
 # run analysis 
 ./tools/trace-analysis-2.0.2/bin/trace-analysis \
@@ -99,7 +102,7 @@ dot deploymentComponentDependencyGraph.dot -T pdf -o output.pdf
 cd ../..
 ```
 
-### 7.3 Deployment Sequence Diagrams
+### 6.3 Deployment Sequence Diagrams
 ```bash
 # run analysis
 ./tools/trace-analysis-2.0.2/bin/trace-analysis \
@@ -113,7 +116,7 @@ cd bin/dsdiagrams
 cd ../..
 ```
 
-## 8. Open the graphs
+## 7. Open the graphs
 Open any .pdf of your choice with the following:
 ```
 gio open output.pdf
