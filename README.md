@@ -10,17 +10,33 @@ Or run:
 git submodule update --remote --recursive
 ```
 
-## 1. Setup the probe and collector
-### Generate
-Otkt will generate the necessary code from an otkt quote.
+## 1. Build Otkt
+The following will build the Otkt code generator.
+```
+cd OtktDSL/kieker.otel.translation.parent/
+./mvnw -P generator
+cd ../..
+```
+Then copy the jar into the right place.
+```
+tools/copy.sh
+```
+
+Note: you can clean the project with `./mvnw clean` if necessary. 
+
+## 2. Setup the probe and collector
+
+### 2.1 Generate
+The Otkt generator will produce the necessary code from an otkt quote.
 ```
 java -jar tools/otkt-jar-with-dependencies.jar examples/demo.otkt
 ```
 
-### Build
-The generated code is comprised made of:
-- The collector (java project)
-- The probe (python module)
+### 2.2 Build
+The generated code is comprised of:
+- A collector (java project)
+- A probe (python module)
+
 The following will build the collector and install the probe.
 ```
 cd otkt-gen
@@ -29,33 +45,33 @@ cd ..
 ```
 Note: you can clean the project with `make clean` if necessary. 
 
-## 2. Instrument anytree
+## 3. Instrument anytree
 
-### 2.1 Instrument the target python files
+### 3.1 Instrument the target python files
 ```
 tools/instrument.sh anytree
 ```
 
-### 2.2 Instrument the entrypoint
+### 3.2 Instrument the entrypoint
 ```
 echo "from otkt.kieker.otelinit import tracer" > examples/anytree-test.py
 ```
 
-## 3. Run the collector
+## 4. Run the collector
 In a separate terminal
 ```
 java -jar otkt-gen/collector/target/Collector-0.0.1-SNAPSHOT-jar-with-dependencies.jar -c res/config.txt
 ```
 
-## 4. Run the app
+## 5. Run the app
 ```
 python3 examples/anytree-test.py
 ```
 
-## 5. Run the analysis
+## 6. Run the analysis
 In `/tmp` there should be kieker logs.
 
-### 5.1 Aggregated Deployment Call Tree
+### 7.1 Aggregated Deployment Call Tree
 ```bash
 # run analysis
 ./tools/trace-analysis-2.0.2/bin/trace-analysis \
@@ -69,7 +85,7 @@ dot aggregatedDeploymentCallTree.dot -T pdf -o output.pdf
 cd ../..
 ```
 
-### 5.2 Deployment Component Dependency Graph
+### 7.2 Deployment Component Dependency Graph
 ```bash
 # run analysis 
 ./tools/trace-analysis-2.0.2/bin/trace-analysis \
@@ -83,7 +99,7 @@ dot deploymentComponentDependencyGraph.dot -T pdf -o output.pdf
 cd ../..
 ```
 
-### 5.3 Deployment Sequence Diagrams
+### 7.3 Deployment Sequence Diagrams
 ```bash
 # run analysis
 ./tools/trace-analysis-2.0.2/bin/trace-analysis \
@@ -97,7 +113,7 @@ cd bin/dsdiagrams
 cd ../..
 ```
 
-## 6. Open the graphs
+## 8. Open the graphs
 Open any .pdf of your choice with the following:
 ```
 gio open output.pdf
