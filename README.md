@@ -65,7 +65,7 @@ pip install anytree
 ### 4.1 Run the collector
 In a separate terminal.
 ```
-java -jar otkt-gen/collector/target/collector-jar-with-dependencies.jar -c res/config.txt
+java -jar otkt-gen/collector/target/collector-jar-with-dependencies.jar -c otkt-gen/config.txt
 ```
 
 ## 4.2 Run the app
