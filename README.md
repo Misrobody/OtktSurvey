@@ -63,7 +63,7 @@ sed -i "1i from otkt.kieker.otelinit import tracer" examples/anytree-test.py
 ### 4.1 Run the collector
 In a separate terminal.
 ```
-java -jar otkt-gen/collector/target/Collector-0.0.1-SNAPSHOT-jar-with-dependencies.jar -c res/config.txt
+java -jar otkt-gen/collector/target/collector-jar-with-dependencies.jar -c res/config.txt
 ```
 
 ## 4.2 Run the app
