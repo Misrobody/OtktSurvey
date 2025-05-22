@@ -58,6 +58,11 @@ tools/instrument.sh anytree
 sed -i "1i from otkt.kieker.otelinit import tracer" examples/anytree-test.py
 ```
 
+### 3.3 Install the instrumented app
+```
+pip install anytree
+```
+
 ## 4. Collect Data
 
 ### 4.1 Run the collector
