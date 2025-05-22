@@ -12,6 +12,7 @@ git submodule update --remote --recursive
 
 ## 1. Build Otkt
 The following will build the Otkt code generator.
+This will take a minute.
 ```
 cd OtktDSL/kieker.otel.translation.parent/
 ./mvnw -P generator
@@ -54,7 +55,7 @@ tools/instrument.sh anytree
 
 ### 3.2 Instrument the entrypoint
 ```
-echo "from otkt.kieker.otelinit import tracer" > examples/anytree-test.py
+echo "from otkt.kieker.otelinit import tracer" >> examples/anytree-test.py
 ```
 
 ## 4. Collect Data
