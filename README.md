@@ -55,7 +55,7 @@ tools/instrument.sh anytree
 
 ### 3.2 Instrument the entrypoint
 ```
-echo "from otkt.kieker.otelinit import tracer" >> examples/anytree-test.py
+sed -i "1i from otkt.kieker.otelinit import tracer" examples/anytree-test.py
 ```
 
 ## 4. Collect Data
