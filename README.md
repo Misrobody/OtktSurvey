@@ -1,5 +1,15 @@
 # OtktSurvey
 
+This repository has submodules.
+Either clone it with:
+```
+git clone --recurse-submodules <url>
+```
+Or run:
+```
+git submodule update --remote --recursive
+```
+
 ## 1. Setup the probe and collector
 ### Generate
 Otkt will generate the necessary code from an otkt quote.
