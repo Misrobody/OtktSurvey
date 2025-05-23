@@ -5,8 +5,6 @@ This repository has submodules. Clone it with:
 git clone --recurse-submodules https://github.com/Misrobody/OtktSurvey.git
 ```
 
-![Otkt logo](res/otkt_logo.svg)
-
 ## 1. Build Otkt
 The following will build the Otkt code generator.
 This will take a minute.
