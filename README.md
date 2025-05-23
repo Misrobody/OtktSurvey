@@ -2,7 +2,7 @@
 
 This repository has submodules. Clone it with:
 ```
-git clone --recurse-submodules <url>
+git clone --recurse-submodules https://github.com/Misrobody/OtktSurvey.git
 ```
 
 ![Otkt logo](res/otkt_logo.svg)
