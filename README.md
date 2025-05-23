@@ -12,4 +12,4 @@ You can either use the docker and open the notebook:
 docker run -p 8888:8888 kieker/sustainkieker-hackathon
 ```
 
-Or follow the [intructions](INSTRUCTIONS.md) from your own environment.
+Or follow the [instructions](INSTRUCTIONS.md) from your own environment.
