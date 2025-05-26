@@ -58,7 +58,8 @@ cd ..
 In a separate terminal.
 
 ```bash
-java -jar otkt-gen/collector/target/collector-jar-with-dependencies.jar -c otkt-gen/config.txt
+cd otkt-gen
+make run
 ```
 
 ## 3.2 Run the app
