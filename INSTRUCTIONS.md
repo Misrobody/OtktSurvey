@@ -1,19 +1,3 @@
-## 0. Getting started
-
-In this survey, we will need to install two custom python packages using pip. In order to not mess with your current setup, we will be using a virtual environment.
-
-Activate the environment.
-
-```bash
-source .venv/bin/activate
-```
-
-At the end of the survey, you can desactivate the environment.
-
-```bash
-deactivate
-```
-
 ## 1. Set up the probe and collector
 
 ### 1.1 Generate
@@ -55,7 +39,9 @@ sed -i "1i from otkt.kieker.otelinit import tracer" examples/anytree-test.py
 ### 2.3 Install the instrumented app
 
 ```bash
-pip install anytree
+cd anytree
+pip install .
+cd ..
 ```
 
 ## 3. Collect Data
