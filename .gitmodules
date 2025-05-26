@@ -1,6 +1,3 @@
 [submodule "anytree"]
 	path = anytree
 	url = https://github.com/c0fec0de/anytree.git
-[submodule "OtktDSL"]
-	path = OtktDSL
-	url = https://github.com/kieker-monitoring/OtktDSL.git

@@ -5,9 +5,9 @@ USER root
 # Set timezone inside container
 RUN ln -snf /usr/share/zoneinfo/$CONTAINER_TIMEZONE /etc/localtime && echo $CONTAINER_TIMEZONE > /etc/timezone
 
-# Install necessary packages
-RUN apt update && \
-    apt install -y openjdk-21-jdk maven git
+RUN apt update
+
+RUN apt install -y openjdk-21-jdk maven git
 
 RUN pip install graphviz
 
