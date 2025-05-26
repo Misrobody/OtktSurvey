@@ -1,7 +1,15 @@
 ## 1. Set up the probe and collector
 
 ### 1.1 Generate
-The Otkt generator will produce the necessary code from an otkt quote.
+
+Since we use OpenTelemetry to gather data, OtktDSL serves as a bridge between OTel and Kieker.
+The Otkt compiler generates the required code based on an Otkt quote which consists of:
+- Span Declaration: define the needed Otel Spans.
+- Kieker Records: define default or custom record types.
+- Mappings: connect spans to monitoring records (default or custom).
+- Collector Configuration: defines port and hostname for data collection.
+
+The following will generate the required code:
 
 ```bash
 java -jar tools/otkt-jar-with-dependencies.jar examples/demo.otkt
