@@ -7,20 +7,16 @@ RUN ln -snf /usr/share/zoneinfo/$CONTAINER_TIMEZONE /etc/localtime && echo $CONT
 
 # Install necessary packages
 RUN apt update && \
-    apt install -y openjdk-21-jdk maven plotutils graphviz ghostscript git
+    apt install -y openjdk-21-jdk maven git
 
 RUN pip install graphviz
 
 RUN pip install jupytext
 
-RUN pip install --no-deps kieker-for-jupyter
-
 RUN git clone https://github.com/Misrobody/OtktSurvey.git --recurse-submodules --branch main --depth 1
 
-RUN rm work
+RUN rm -r work
 
-RUN cd OtktSurvey
+WORKDIR OtktSurvey
 
 RUN jupytext --to notebook INSTRUCTIONS.md
-
-
