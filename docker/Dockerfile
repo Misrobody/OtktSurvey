@@ -4,7 +4,7 @@ USER root
 
 RUN apt update
 
-RUN apt install -y openjdk-21-jdk maven git make graphviz
+RUN apt install -y openjdk-21-jdk maven git make graphviz pic2plot ps2pdf libglib2.0-dev
 
 USER jovyan
 
