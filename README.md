@@ -9,8 +9,7 @@ git clone --recurse-submodules https://github.com/Misrobody/OtktSurvey.git
 
 You can either use the docker and open the notebook INSTRUCTIONS.ipynb:
 ```
-docker build -t otkt-dsl-survey docker/
-docker run -p 8888:8888 otkt-dsl-survey
+docker run -p 8888:8888 kieker/otkt-dsl-survey
 ```
 
 Or follow the [instructions](INSTRUCTIONS.md) from your own environment.
